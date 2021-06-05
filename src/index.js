@@ -58,7 +58,9 @@ client.on('message', (message) => {
 
     if (content === 'cuantos faltan') {
         let cantFaltan = 10 - jugadores.length;
-        mensaje.setTitle('Vamooo que faltan: ', 'RED', `${cantFaltan}`);
+        const description = `${cantFaltan} platitas`
+        mensaje.setTitle('Vamooo que faltan: ', 'RED', description);
+        message.channel.send(mensaje)
     }
 })
 
