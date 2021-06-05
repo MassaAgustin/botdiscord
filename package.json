@@ -1,15 +1,26 @@
 {
-  "name": "Discord",
+  "name": "discord.js-heroku",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "12.x",
+    "npm": "*"
+},
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://git.heroku.com/botdiscordla9.git"
+  },
+  "keywords": [
+    "heroku",
+    "discord.js"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "discord.js": "^12.5.3"
   },

@@ -19,6 +19,8 @@ client.on('message', (message) => {
 
     const { content, reply } = message;
 
+    console.log(content)
+
     if (content === 'se pica') {
 
         if (jugadores.length === 10) {
