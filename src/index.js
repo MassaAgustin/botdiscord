@@ -52,8 +52,8 @@ client.on('message', (message) => {
         }
     }
 
-    if (content.includes('faltan')){
-        const cantFaltan = 10 - jugadores.length;
+    if (content === 'cuantos faltan'){
+        let cantFaltan = 10 - jugadores.length;
         mensaje.setTitle('Vamooo que faltan: ', 'RED', `${cantFaltan}`);
     }
 })
