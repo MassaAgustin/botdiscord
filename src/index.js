@@ -1,7 +1,9 @@
 const { Client, MessageEmbed, MessageCollector } = require('discord.js');
-const client = new Client();
-
 const config = require("../config.json");
+
+const client = new Client();
+client.login(config.token);
+
 
 var jugadores = [];
 var equipo1 = [];
@@ -52,7 +54,7 @@ client.on('message', (message) => {
         }
     }
 
-    if (content === 'cuantos faltan'){
+    if (content === 'cuantos faltan') {
         let cantFaltan = 10 - jugadores.length;
         mensaje.setTitle('Vamooo que faltan: ', 'RED', `${cantFaltan}`);
     }
@@ -92,5 +94,3 @@ const getEquiposRandom = () => {
         }
     })
 }
-
-client.login(config.token);
