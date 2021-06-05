@@ -1,4 +1,4 @@
-const { Client, MessageEmbed, MessageCollector } = require('discord.js');
+const { Client, MessageEmbed } = require('discord.js');
 const config = require("../config.json");
 
 const client = new Client();
@@ -10,6 +10,7 @@ var equipo1 = [];
 var equipo2 = [];
 
 const mensaje = new MessageEmbed();
+var listadoMessage = new MessageEmbed();
 
 client.on('ready', () => {
     console.log('Bot is ready as', client.user.tag);
@@ -36,20 +37,23 @@ client.on('message', (message) => {
     if (content === 'quiero fedear') {
 
         const nickJugador = message.author.tag;
+        const avatarJugador = message.author.avatarURL();
+
         if (jugadores.length !== 10) {
             if (!existeJugador(nickJugador)) {
-                jugadores.push(nickJugador);
+                jugadores.push({
+                    nick: nickJugador,
+                    avatar: avatarJugador
+                });
                 setMensaje('Cargando Equipo', 'RED', `${jugadores.length}/10`)
                 message.channel.send(mensaje);
             } else {
                 setMensaje('No vale repetir! ', 'RED', nickJugador);
                 message.channel.send(mensaje);
             }
-
-
         } else {
             getEquiposRandom();
-            setMensaje('Listo rancios ya estamos los 10', 'RED', 'Ahora les paso los equipos');
+            setMensaje('Listo rancios ya estamos los 10', 'RED', 'Ahi van los equipos');
             console.log(equipo1);
             console.log(equipo2);
             message.channel.send(mensaje)
@@ -62,6 +66,12 @@ client.on('message', (message) => {
         setMensaje('Vamooo que faltan: ', 'RED', description);
         message.channel.send(mensaje)
     }
+
+    if (content === 'listar platitas') {
+        const seLista = listarPlatitas();
+        seLista ? message.channel.send(listadoMessage) : message.channel.send(mensaje)
+    }
+
 })
 
 const setMensaje = (title, color, description) => {
@@ -70,10 +80,26 @@ const setMensaje = (title, color, description) => {
     mensaje.setDescription(description)
 }
 
+const listarPlatitas = () => {
+    if (jugadores.length) {
+        listadoMessage = new MessageEmbed();
+        listadoMessage.setTitle('El ultimo...');
+        listadoMessage.setColor('RED');
+        jugadores.forEach((jugador, index) => {
+            const indexFix = index + 1;
+            listadoMessage.addField(`${indexFix}. ${jugador.nick} :grey_exclamation:`, ':ok_hand: :white_check_mark:')
+        })
+        return true;
+    } else {
+        setMensaje('Todavia no hay ningun platita', 'RED', ':rage: :rage: :rage:');
+        return false;
+    }
+}
+
 const existeJugador = (jugador) => {
     let existe = false;
     jugadores.forEach(player => {
-        if (player === jugador) {
+        if (player.nick === jugador) {
             existe = true
         }
     })
