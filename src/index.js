@@ -59,7 +59,7 @@ client.on('message', (message) => {
     if (content === 'cuantos faltan') {
         let cantFaltan = 10 - jugadores.length;
         const description = `${cantFaltan} platitas`
-        mensaje.setMensaje('Vamooo que faltan: ', 'RED', description);
+        setMensaje('Vamooo que faltan: ', 'RED', description);
         message.channel.send(mensaje)
     }
 })
