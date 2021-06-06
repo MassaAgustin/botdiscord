@@ -1,4 +1,4 @@
-/* const { Client, MessageEmbed } = require('discord.js');
+const { Client, MessageEmbed } = require('discord.js');
 const config = require("../config.json");
 
 const { connect, request, authenticate } = require('league-connect')
@@ -218,4 +218,4 @@ const getEquiposRandom = () => {
         }
     })
     console.log('Equipo 2: ', equipo2)
-} */
+}
