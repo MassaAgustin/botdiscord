@@ -1,14 +1,15 @@
-const { Client, MessageEmbed } = require('discord.js');
+/* const { Client, MessageEmbed } = require('discord.js');
 const config = require("../config.json");
 
+const { connect, request, authenticate } = require('league-connect')
 
 //INTRO BOT LA9
 //Modularizar bien todo
 //Llevar luego metodos similares a un archivo js distinto
 //Por ahora usamos vars, luego si es necesario creamos una db en mongo o donde sea.
 
-const client = new Client();
-client.login(config.token);
+const clientD = new Client();
+clientD.login(config.token);
 
 const textImages = require('./constants/imageText');
 
@@ -22,11 +23,11 @@ var mensajeEquipo1 = new MessageEmbed();
 var mensajeEquipo2 = new MessageEmbed();
 var listadoMessage = new MessageEmbed();
 
-client.on('ready', () => {
-    console.log('Bot is ready as', client.user.tag);
+clientD.on('ready', () => {
+    console.log('Bot is ready as', clientD.user.tag);
 });
 
-client.on('message', async (message) => {
+clientD.on('message', async (message) => {
 
 
     const { content, reply } = message;
@@ -217,4 +218,4 @@ const getEquiposRandom = () => {
         }
     })
     console.log('Equipo 2: ', equipo2)
-}
+} */
