@@ -127,7 +127,7 @@ clientD.on('message', async (message) => {
         const cantJugadores = args.length;
         let armoRandom = false;
 
-        if (args[cantJugadores] === 'random') {
+        if (args[cantJugadores+1] === 'random') {
             armoRandom = true;
             jugadores.pop();
         }
