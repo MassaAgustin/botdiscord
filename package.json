@@ -22,6 +22,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "discord-buttons": "^3.1.1",
     "discord.js": "^12.5.3",
     "league-connect": "^5.2.0"
   },

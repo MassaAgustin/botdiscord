@@ -1,7 +1,6 @@
 const { Client, MessageEmbed } = require('discord.js');
 const config = require("../config.json");
-
-const { connect, request, authenticate } = require('league-connect')
+const { forEach } = require('./constants/imageText');
 
 //INTRO BOT LA9
 //Modularizar bien todo
@@ -35,30 +34,31 @@ clientD.on('message', async (message) => {
     const args = message.content.trim().split(/ +/g);
     const command = args.shift().toLowerCase();
 
-    console.log(command)
+    console.log('Comando ejecutado', command)
 
+    //Para crear un partido con maxJugadores
     if (command === 'sepica') {
-
-        setMensaje('Se re pica :hot_face:', 'RED', 'Escriban "quierofedear" los que quieran jugar')
+        const parametro = args[0];
 
         if (jugadores.length === maxJugadores) {
-            setMensaje('Ya hay un partido en juego', 'RED', 'si desean otro "sepica reset"')
+            setMensaje('Ya hay un partido en juego', 'warning', 'si quieren otro jodanse ndeah')
         }
-        if (args[0] !== 'reset') {
+        if (parametro !== 'reset') {
 
-            setMensaje(`Se cambio la cantidad maxima de jugadores por ${args[0]}`, 'RED', `antes: ${maxJugadores}`)
-            maxJugadores = args[0]
+            setMensaje(`Se cambio la cantidad maxima de jugadores por ${parametro}`, 'success', `antes: ${maxJugadores}`);
+            (typeof parametro === 'number')
+                ? maxJugadores = parametro
+                : setMensaje('Not today Prietto jeje', 'danger', 'el parametro tiene que ser un numero')
 
         } else {
-            setMensaje(`Equipo de ${maxJugadores} armado!`, 'RED', 'se re contra piko')
-            jugadores = [];
-            equipo1 = [];
-            equipo2 = [];
+            setMensaje(`Equipo de ${maxJugadores} armado!`, 'success', 'se re contra piko')
+            resetEquipos()
         }
 
         message.channel.send(mensaje);
     }
 
+    //Para entrar en cola de un partido
     if (command === 'quierofedear') {
 
         const nickJugador = message.author.tag;
@@ -70,35 +70,39 @@ clientD.on('message', async (message) => {
                     nick: nickJugador,
                     avatar: avatarJugador
                 });
-                setMensaje('Cargando Equipo', 'RED', `${jugadores.length}/${maxJugadores}`)
+                setMensaje('En cola', 'success', `${jugadores.length}/${maxJugadores}`)
                 message.channel.send(mensaje);
             } else {
-                setMensaje('No vale repetir! ', 'RED', nickJugador);
+                setMensaje('No vale repetir! ', 'warning', nickJugador);
                 message.channel.send(mensaje);
             }
         } else {
-            setMensaje(`Listo rancios ya estamos los ${maxJugadores}`, 'RED', 'Ahi van los equipos...');
+            setMensaje(`Listo rancios ya estamos los ${maxJugadores}`, 'success', '"armarequipos" tiren ahora pa');
             message.channel.send(mensaje)
         }
     }
 
+    //Para mostrar cuantos jugadores faltan para completar el partido
     if (command === 'cuantosfaltan') {
-        let cantFaltan = maxJugadores - jugadores.length;
-        const description = `${cantFaltan} platitas`
-        setMensaje('Vamooo que faltan: ', 'RED', description);
+
+        const description = `${cantFaltante()} platitas`
+        setMensaje('Vamooo\' que faltan: ', 'success', description);
         message.channel.send(mensaje)
     }
 
+    //Para listar los jugadores que hay en cola
     if (command === 'listarplatitas') {
         const seLista = listarPlatitas();
         seLista ? message.channel.send(listadoMessage) : message.channel.send(mensaje)
     }
 
+    //Devuelve un simbolo random o por parametro
     if (command === 'gg') {
         let messageText;
+        const parametro = args[0];
 
-        if (args.length) {
-            messageText = getImageTextById(args[0]);
+        if (args.length && typeof parametro === number) {
+            messageText = getImageTextById(parametro);
         } else {
             messageText = getImageTextRandom();
         }
@@ -106,25 +110,88 @@ clientD.on('message', async (message) => {
         message.channel.send(messageText)
     }
 
+    //Limpia el chat, se le puede pasar un argumento
     if (command == 'limpiar') {
-        message.delete();
-        args.length
-            ? await message.channel.bulkDelete(args[0])
+
+        const parametro = args[0];
+
+        (args.length && typeof parametro === 'number')
+            ? await message.channel.bulkDelete(parametro)
             : await message.channel.bulkDelete(1)
     }
 
-    if (command == 'mostrarequipos') {
-        getEquiposRandom();
-        setMensajeEquipos();
-        message.channel.send(mensajeEquipo1);
-        message.channel.send(mensajeEquipo2);
+    //Arma un equipo random con la lista de jugadores, tambien se le puede pasar un array con todos los jugadores
+    if (command == 'armarequipo') {
+        let seJuega = false;
+        const cantJugadores = args.length;
+        let armoRandom = false;
+
+        if (args[cantJugadores] === 'random') {
+            armoRandom = true;
+            jugadores.pop();
+        }
+
+        if (cantJugadores) {
+            maxJugadores = args.length;
+            resetEquipos();
+            args.forEach(nick => {
+                jugadores.push({
+                    nick
+                })
+            })
+            seJuega = true;
+        }
+        else {
+            if (maxJugadores == jugadores.length) {
+                seJuega = true;
+            } else {
+                setMensaje('Presta atencion lptm', 'warning', `todavia faltan ${cantFaltante()} platitas para armar el equipo`)
+                message.channel.send(mensaje);
+            }
+        }
+
+        if (seJuega) {
+            getEquipos(armoRandom);
+            setMensajeEquipos();
+            message.channel.send(mensajeEquipo1);
+            message.channel.send(mensajeEquipo2);
+        }
     }
 
 })
 
+const cantFaltante = () => {
+    return (maxJugadores - jugadores.length)
+}
+
+const resetEquipos = () => {
+    jugadores = [];
+    equipo1 = [];
+    equipo2 = [];
+}
+
 const setMensaje = (title, color, description) => {
+
+    let messageType = 'RED';
+
+    switch (color) {
+        case 'success':
+            messageType = 'GREEN';
+            break;
+
+        case 'success':
+            messageType = 'ORANGE';
+            break;
+
+        case 'success':
+            messageType = 'RED';
+            break;
+
+        default:
+            break;
+    }
     mensaje.setTitle(title);
-    mensaje.setColor(color);
+    mensaje.setColor(messageType);
     mensaje.setDescription(description)
 }
 
@@ -133,10 +200,10 @@ const setMensajeEquipos = () => {
     mensajeEquipo2 = new MessageEmbed();
 
     mensajeEquipo1.setTitle('Equipo 1');
-    mensajeEquipo1.setColor('RED');
+    mensajeEquipo1.setColor('BLURPLE');
 
     mensajeEquipo2.setTitle('Equipo 2');
-    mensajeEquipo2.setColor('BLUE');
+    mensajeEquipo2.setColor('GREYPLE');
 
     if (equipo1.length) {
         equipo1.forEach(player => {
@@ -157,14 +224,15 @@ const listarPlatitas = () => {
     if (jugadores.length) {
         listadoMessage = new MessageEmbed();
         listadoMessage.setTitle('El ultimo...');
-        listadoMessage.setColor('RED');
+        listadoMessage.setColor('GOLD');
+        listadoMessage.setFooter('Le debe una birrita al primero');
         jugadores.forEach((jugador, index) => {
             const indexFix = index + 1;
             listadoMessage.addField(`${indexFix}. ${jugador.nick} :grey_exclamation:`, ':ok_hand: :white_check_mark:')
         })
         return true;
     } else {
-        setMensaje('Todavia no hay ningun platita', 'RED', ':rage: :rage: :rage:');
+        setMensaje('Todavia no hay ningun platita', 'warning', ':rage: :rage: :rage:');
         return false;
     }
 }
@@ -183,7 +251,7 @@ const existeJugador = (jugador) => {
 const getImageTextRandom = () => {
 
     const imagesLength = textImages.length;
-    console.log(imagesLength)
+
     const random = (Math.round(Math.random() * imagesLength))
     return textImages[random];
 }
@@ -194,28 +262,37 @@ const getImageTextById = (id) => {
     if (id >= 0 && id < imagesLength) {
         return textImages[id]
     }
-    return "No existe esa vaina";
+    return "No existe s fasilito";
 }
 
-const getEquiposRandom = () => {
+const getEquipos = (esRandom) => {
 
     const mitadJugadores = Math.floor(maxJugadores / 2)
 
-    while (equipo1.length != mitadJugadores) {
-        const random = Math.floor(Math.random() * maxJugadores);
-        console.log('nro random: ', random)
-        console.log('nick jugador: ', jugadores[random])
-        if (jugadores[random] !== 'listo') {
-            equipo1.push(jugadores[random]);
-            jugadores[random] = 'listo'
+    if (esRandom) {
+        while (equipo1.length != mitadJugadores) {
+            const random = Math.floor(Math.random() * maxJugadores);
+            if (jugadores[random] !== 'listo') {
+                equipo1.push(jugadores[random]);
+                jugadores[random] = 'listo'
+            }
         }
-        console.log('Equipo 1: ', equipo1)
-    }
 
-    jugadores.forEach((jugador, index) => {
-        if (jugador !== 'listo') {
-            equipo2.push(jugador)
+        jugadores.forEach((jugador, index) => {
+            if (jugador !== 'listo') {
+                equipo2.push(jugador)
+            }
+        })
+    } else {
+        let i = 0;
+        while (equipo1.length != mitadJugadores) {
+            equipo1.push(jugadores[i])
+            i = i + 1;
         }
-    })
-    console.log('Equipo 2: ', equipo2)
+
+        while (equipo2.length != mitadJugadores) {
+            equipo2.push(jugadores[i])
+            i = i + 1;
+        }
+    }
 }
