@@ -29,16 +29,16 @@ clientD.on('ready', () => {
 clientD.on('message', async (message) => {
 
 
-    const { content, reply } = message;
+    const { content } = message;
 
-    const args = message.content.trim().split(/ +/g);
+    const args = content.trim().split(/ +/g);
     const command = args.shift().toLowerCase();
 
     console.log('Comando ejecutado', command)
 
     //Para crear un partido con maxJugadores
     if (command === 'sepica') {
-        const parametro = args[0];
+        const parametro = Number(args[0]);
 
         if (jugadores.length === maxJugadores) {
             setMensaje('Ya hay un partido en juego', 'warning', 'si quieren otro jodanse ndeah')
@@ -99,9 +99,9 @@ clientD.on('message', async (message) => {
     //Devuelve un simbolo random o por parametro
     if (command === 'gg') {
         let messageText;
-        const parametro = args[0];
+        const parametro = Number(args[0]);
 
-        if (args.length && typeof parametro === number) {
+        if (args.length && typeof parametro === 'number') {
             messageText = getImageTextById(parametro);
         } else {
             messageText = getImageTextRandom();
@@ -113,7 +113,7 @@ clientD.on('message', async (message) => {
     //Limpia el chat, se le puede pasar un argumento
     if (command == 'limpiar') {
 
-        const parametro = args[0];
+        const parametro = Number(args[0]);
 
         (args.length && typeof parametro === 'number')
             ? await message.channel.bulkDelete(parametro)
