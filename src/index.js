@@ -23,6 +23,7 @@ var mensajeEquipo2 = new MessageEmbed();
 var listadoMessage = new MessageEmbed();
 
 var lastMessage = '';
+clientD.login(config.token);
 
 clientD.on('ready', () => {
     console.log('Bot is ready as', clientD.user.tag);
@@ -201,23 +202,7 @@ clientD.on('message', async (message) => {
 
         message.channel.send(mensajeComandos);
     }
-
-    if (command == 'entrabicho') {
-        login()
-    }
-
-    if (command == 'salibicho') {
-        logout()
-    }
 })
-
-const login = () => {
-    clientD.login(config.token);
-}
-
-const logout = () => {
-    clientD.destroy();
-}
 
 const cantFaltante = () => {
     return (maxJugadores - jugadores.length)
