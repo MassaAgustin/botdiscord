@@ -172,8 +172,8 @@ clientD.on('message', async (message) => {
             { name: 'quierofedear', value: 'Te une a la cola' },
             { name: 'cuantosfaltan', value: 'Te indica la cantidad de jugadores que faltan para armar un equipo' },
             { name: 'listarplatitas', value: 'Te muestra los jugadores que se encuentran en cola' },
-            { name: 'gg', value: 'Devuelve un fasilito random' }
-            { name: 'gg x', value: 'Devuelve un fasilito en particular' }
+            { name: 'gg', value: 'Devuelve un fasilito random' },
+            { name: 'gg x', value: 'Devuelve un fasilito en particular' },
             { name: 'armarequipo', value: 'Arma un equipo con los jugadores que esten en la cola' },
             { name: 'armarequipo random', value: 'Same de arriba pero random' },
             { name: 'armarequipo []', value: 'Arma un equipo con los jugadores pasados entre espacios' },
