@@ -1,14 +1,14 @@
 const { Client, MessageEmbed } = require('discord.js');
 const config = require("../config.json");
-const { forEach } = require('./constants/imageText');
+const clientD = new Client();
+clientD.login(config.token);
+const disbutton = require('discord-buttons');
+disbutton(clientD);
 
 //INTRO BOT LA9
 //Modularizar bien todo
 //Llevar luego metodos similares a un archivo js distinto
 //Por ahora usamos vars, luego si es necesario creamos una db en mongo o donde sea.
-
-const clientD = new Client();
-clientD.login(config.token);
 
 const textImages = require('./constants/imageText');
 
@@ -17,17 +17,32 @@ var jugadores = [];
 var equipo1 = [];
 var equipo2 = [];
 
+var buttonMessage = new disbutton.MessageButton();
 const mensaje = new MessageEmbed();
 var mensajeEquipo1 = new MessageEmbed();
 var mensajeEquipo2 = new MessageEmbed();
 var listadoMessage = new MessageEmbed();
 
+var lastMessage = '';
+
 clientD.on('ready', () => {
     console.log('Bot is ready as', clientD.user.tag);
 });
 
+clientD.on('clickButton', async (button) => {
+
+    (button.clicker.user.id === lastMessage.author.id)
+        ? setMensaje(`Equipo de ${maxJugadores} reseteado!`, 'success', '"tiren quierofedear"')
+        : setMensaje(`Solo ${lastMessage.author.tag} puede activar este boton`, 'danger', 'no seas trolo man')
+
+    lastMessage.channel.send(mensaje)
+})
+
 clientD.on('message', async (message) => {
 
+    if (message.author.tag != 'ElBicho#2083') {
+        lastMessage = message;
+    }
 
     const { content } = message;
 
@@ -41,22 +56,26 @@ clientD.on('message', async (message) => {
         let parametro = args[0];
 
         if (jugadores.length === maxJugadores) {
-            setMensaje('Ya hay un partido en juego', 'warning', 'si quieren otro jodanse ndeah')
+            setMensaje('Ya hay un partido en juego', 'warning', 'si quieren otro jodanse ndeah');
+            message.channel.send(mensaje);
         }
         if (parametro !== 'reset') {
 
             setMensaje(`Se cambio la cantidad maxima de jugadores por ${parametro}`, 'success', `antes: ${maxJugadores}`);
-            parametro = Number(args[0])
-                (typeof parametro === 'number')
+            parametro = Number(args[0]);
+            (typeof parametro === 'number')
                 ? maxJugadores = parametro
                 : setMensaje('Not today Prietto jeje', 'danger', 'el parametro tiene que ser un numero')
 
+            message.channel.send(mensaje);
         } else {
-            setMensaje(`Equipo de ${maxJugadores} reseteado!`, 'success', '"tiren quierofedear"')
-            resetEquipos()
-        }
+            buttonMessage
+                .setStyle('red')
+                .setLabel('Reiniciar equipo')
+                .setID('button_reiniciar_equipo');
 
-        message.channel.send(mensaje);
+            message.channel.send('Estas seguro que deseas reiniciar el match?', buttonMessage);
+        }
     }
 
     //Para entrar en cola de un partido
@@ -78,6 +97,7 @@ clientD.on('message', async (message) => {
                 message.channel.send(mensaje);
             }
         } else {
+
             setMensaje(`Listo rancios ya estamos los ${maxJugadores}`, 'success', '"armarequipos" tiren ahora pa');
             message.channel.send(mensaje)
         }
@@ -179,6 +199,8 @@ clientD.on('message', async (message) => {
             { name: 'armarequipo []', value: 'Arma un equipo con los jugadores pasados entre espacios' },
             { name: 'armarequipo [] random', value: 'Same de arriba pero random' }
         ])
+
+        message.channel.send(mensajeComandos);
     }
 
 })
