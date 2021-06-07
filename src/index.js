@@ -1,7 +1,6 @@
 const { Client, MessageEmbed } = require('discord.js');
 const config = require("../config.json");
 const clientD = new Client();
-clientD.login(config.token);
 const disbutton = require('discord-buttons');
 disbutton(clientD);
 
@@ -12,7 +11,7 @@ disbutton(clientD);
 
 const textImages = require('./constants/imageText');
 
-var maxJugadores = '10';
+var maxJugadores = 10;
 var jugadores = [];
 var equipo1 = [];
 var equipo2 = [];
@@ -31,11 +30,11 @@ clientD.on('ready', () => {
 
 clientD.on('clickButton', async (button) => {
 
-    (button.clicker.user.id === lastMessage.author.id)
-        ? setMensaje(`Equipo de ${maxJugadores} reseteado!`, 'success', '"tiren quierofedear"')
-        : setMensaje(`Solo ${lastMessage.author.tag} puede activar este boton`, 'danger', 'no seas trolo man')
-
-    lastMessage.channel.send(mensaje)
+    if (button.clicker.user.id === lastMessage.author.id) {
+        await button.reply.send(`Equipo de ${maxJugadores} reseteado!`)
+    } else {
+        await button.reply.send(`Propiedad de ${lastMessage.author.tag}`)
+    }
 })
 
 clientD.on('message', async (message) => {
@@ -203,7 +202,22 @@ clientD.on('message', async (message) => {
         message.channel.send(mensajeComandos);
     }
 
+    if (command == 'entrabicho') {
+        login()
+    }
+
+    if (command == 'salibicho') {
+        logout()
+    }
 })
+
+const login = () => {
+    clientD.login(config.token);
+}
+
+const logout = () => {
+    clientD.destroy();
+}
 
 const cantFaltante = () => {
     return (maxJugadores - jugadores.length)
@@ -256,7 +270,6 @@ const setMensajeEquipos = () => {
         })
     }
 
-    console.log(equipo2)
     if (equipo2.length) {
         equipo2.forEach(player => {
             mensajeEquipo2.addField(`${player.nick}`, ':ok_hand: :white_check_mark:')
