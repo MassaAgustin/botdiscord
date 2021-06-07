@@ -38,19 +38,21 @@ clientD.on('message', async (message) => {
 
     //Para crear un partido con maxJugadores
     if (command === 'sepica') {
+        let parametro = args[0];
 
         if (jugadores.length === maxJugadores) {
             setMensaje('Ya hay un partido en juego', 'warning', 'si quieren otro jodanse ndeah')
         }
         if (parametro !== 'reset') {
-            const parametro = Number(args[0]);
+
             setMensaje(`Se cambio la cantidad maxima de jugadores por ${parametro}`, 'success', `antes: ${maxJugadores}`);
+            parametro = Number(args[0])
             (typeof parametro === 'number')
                 ? maxJugadores = parametro
                 : setMensaje('Not today Prietto jeje', 'danger', 'el parametro tiene que ser un numero')
 
         } else {
-            setMensaje(`Equipo de ${maxJugadores} armado!`, 'success', 'se re contra piko')
+            setMensaje(`Equipo de ${maxJugadores} reseteado!`, 'success', '"tiren quierofedear"')
             resetEquipos()
         }
 
