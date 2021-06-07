@@ -47,7 +47,7 @@ clientD.on('message', async (message) => {
 
             setMensaje(`Se cambio la cantidad maxima de jugadores por ${parametro}`, 'success', `antes: ${maxJugadores}`);
             parametro = Number(args[0])
-            (typeof parametro === 'number')
+                (typeof parametro === 'number')
                 ? maxJugadores = parametro
                 : setMensaje('Not today Prietto jeje', 'danger', 'el parametro tiene que ser un numero')
 
@@ -127,14 +127,18 @@ clientD.on('message', async (message) => {
         const cantJugadores = args.length;
         let armoRandom = false;
 
-        if (args[cantJugadores+1] === 'random') {
+        if (args[cantJugadores - 1] == 'random') {
+            resetEquipos();
             armoRandom = true;
-            jugadores.pop();
+        }
+
+        if (args[0] == 'random') {
+            armoRandom = true;
         }
 
         if (cantJugadores) {
+            args.pop();
             maxJugadores = args.length;
-            resetEquipos();
             args.forEach(nick => {
                 jugadores.push({
                     nick
@@ -157,6 +161,24 @@ clientD.on('message', async (message) => {
             message.channel.send(mensajeEquipo1);
             message.channel.send(mensajeEquipo2);
         }
+    }
+
+    if (command == 'comandoshelp') {
+        const mensajeComandos = new MessageEmbed();
+        mensajeComandos.setTitle('Listado de comandos disponibles');
+        mensajeComandos.addFields([
+            { name: 'sepica x', value: 'Arma un equipo para inscribir a x cantidad de jugadores' },
+            { name: 'sepica reset', value: 'Elimina todos los jugadores en la cola y arma uno nuevo' },
+            { name: 'quierofedear', value: 'Te une a la cola' },
+            { name: 'cuantosfaltan', value: 'Te indica la cantidad de jugadores que faltan para armar un equipo' },
+            { name: 'listarplatitas', value: 'Te muestra los jugadores que se encuentran en cola' },
+            { name: 'gg', value: 'Devuelve un fasilito random' }
+            { name: 'gg x', value: 'Devuelve un fasilito en particular' }
+            { name: 'armarequipo', value: 'Arma un equipo con los jugadores que esten en la cola' },
+            { name: 'armarequipo random', value: 'Same de arriba pero random' },
+            { name: 'armarequipo []', value: 'Arma un equipo con los jugadores pasados entre espacios' },
+            { name: 'armarequipo [] random', value: 'Same de arriba pero random' }
+        ])
     }
 
 })
