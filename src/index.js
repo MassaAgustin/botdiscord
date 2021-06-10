@@ -1,8 +1,21 @@
 const { Client, MessageEmbed } = require('discord.js');
+const fetch = require('node-fetch');
 const config = require("../config.json");
 const clientD = new Client();
 const disbutton = require('discord-buttons');
 disbutton(clientD);
+
+const url = `https://la2.api.riotgames.com/lol/summoner/v4/summoners/by-name/${config.namePlayer}?api_key=${config.api_key_lol}`
+
+fetch(url)
+    .then(function (response) {
+        response.json()
+            .then(res => {
+                console.log(res)
+            })
+    }).catch(function (error) {
+        console.log('Request failed', error)
+    });
 
 //INTRO BOT LA9
 //Modularizar bien todo
@@ -202,7 +215,48 @@ clientD.on('message', async (message) => {
 
         message.channel.send(mensajeComandos);
     }
+
+    if (command == 'opgg') {
+        const playerActual = getNickName(message.author.tag)
+        setMensaje('Op gg', 'success', getStatsOpGg(playerActual))
+        message.channel.send(mensaje);
+    }
+
+    if (command == 'poro') {
+        const playerActual = getNickName(message.author.tag)
+        setMensaje('Porofessor: ', 'success', getStatsPoro(playerActual))
+        message.channel.send(mensaje);
+    }
 })
+
+const getNickName = (player) => {
+
+    const defaultNick = "not found";
+
+    const nicksDiscord = {
+        Ruffex: "Ruffex",
+        Lebi: "Lebi",
+        FrostBeniusAM: "FrostBenius",
+        Wyers: "Wyers",
+        "Joaco.mas": "Joaco Purrum",
+        rdmarcos49: "truuck",
+        Chacha: "El Cogollos",
+        Guichi :"EL BICHO",
+        Dijkstra: ""
+    }
+
+    const nickLol = nicksDiscord[player.substr(0, player.length - 5)] || defaultNick;
+
+    return nickLol;
+}
+
+const getStatsOpGg = (player) => {
+    return `https://las.op.gg/summoner/userName=${player}`
+}
+
+const getStatsPoro = (player) => {
+    return `https://porofessor.gg/live/las/${player}`
+}
 
 const cantFaltante = () => {
     return (maxJugadores - jugadores.length)
