@@ -232,7 +232,6 @@ clientD.on('message', async (message) => {
 const getNickName = (player) => {
 
     const defaultNick = "not found";
-    const playerParse = player.trim();
 
     const nicksDiscord = {
         Ruffex: "Ruffex",
@@ -246,10 +245,10 @@ const getNickName = (player) => {
         Dijkstra: "",
         ELECHEE: "ECHOR",
         UnluckyBoy: "UnluckyBoy",
-        PrisonMike: "Dwight K Shrute"
+        "Prison Mike": "Dwight K Shrute"
     }
 
-    const nickLol = nicksDiscord[playerParse.substr(0, playerParse.length - 5)] || defaultNick;
+    const nickLol = nicksDiscord[player.substr(0, player.length - 5)] || defaultNick;
 
     return nickLol;
 }
