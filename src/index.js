@@ -26,8 +26,14 @@ const textImages = require('./constants/imageText');
 
 var maxJugadores = 10;
 var jugadores = [];
-var equipo1 = [];
-var equipo2 = [];
+var equipo1 = {
+    jugadores: [],
+    name: 'Equipo 1'
+};
+var equipo2 = {
+    jugadores: [],
+    name: 'Equipo 2'
+};
 
 var buttonMessage = new disbutton.MessageButton();
 const mensaje = new MessageEmbed();
@@ -227,6 +233,16 @@ clientD.on('message', async (message) => {
         setMensaje('Porofessor: ', 'success', getStatsPoro(playerActual))
         message.channel.send(mensaje);
     }
+
+    if(command == 'equipo1') {
+        let parametro = args[0];
+        equipo1.name = parametro
+    }
+
+    if(command == 'equipo2') {
+        let parametro = args[0];
+        equipo2.name = parametro
+    }
 })
 
 const getNickName = (player) => {
@@ -267,8 +283,8 @@ const cantFaltante = () => {
 
 const resetEquipos = () => {
     jugadores = [];
-    equipo1 = [];
-    equipo2 = [];
+    equipo1.jugadores = [];
+    equipo2.jugadores = [];
 }
 
 const setMensaje = (title, color, description) => {
@@ -300,20 +316,20 @@ const setMensajeEquipos = () => {
     mensajeEquipo1 = new MessageEmbed();
     mensajeEquipo2 = new MessageEmbed();
 
-    mensajeEquipo1.setTitle('Equipo 1');
+    mensajeEquipo1.setTitle(equipo1.name);
     mensajeEquipo1.setColor('BLURPLE');
 
-    mensajeEquipo2.setTitle('Equipo 2');
+    mensajeEquipo2.setTitle(equipo2.name);
     mensajeEquipo2.setColor('GREYPLE');
 
-    if (equipo1.length) {
-        equipo1.forEach(player => {
+    if (equipo1.jugadores.length) {
+        equipo1.jugadores.forEach(player => {
             mensajeEquipo1.addField(`${player.nick}`, ':ok_hand: :white_check_mark:')
         })
     }
 
-    if (equipo2.length) {
-        equipo2.forEach(player => {
+    if (equipo2.jugadores.length) {
+        equipo2.jugadores.forEach(player => {
             mensajeEquipo2.addField(`${player.nick}`, ':ok_hand: :white_check_mark:')
         })
     }
@@ -370,28 +386,28 @@ const getEquipos = (esRandom) => {
     const mitadJugadores = Math.floor(maxJugadores / 2)
 
     if (esRandom) {
-        while (equipo1.length != mitadJugadores) {
+        while (equipo1.jugadores.length != mitadJugadores) {
             const random = Math.floor(Math.random() * maxJugadores);
             if (jugadores[random] !== 'listo') {
-                equipo1.push(jugadores[random]);
+                equipo1.jugadores.push(jugadores[random]);
                 jugadores[random] = 'listo'
             }
         }
 
         jugadores.forEach((jugador, index) => {
             if (jugador !== 'listo') {
-                equipo2.push(jugador)
+                equipo2.jugadores.push(jugador)
             }
         })
     } else {
         let i = 0;
-        while (equipo1.length != mitadJugadores) {
-            equipo1.push(jugadores[i])
+        while (equipo1.jugadores.length != mitadJugadores) {
+            equipo1.jugadores.push(jugadores[i])
             i = i + 1;
         }
 
-        while (equipo2.length != mitadJugadores) {
-            equipo2.push(jugadores[i])
+        while (equipo2.jugadores.length != mitadJugadores) {
+            equipo2.jugadores.push(jugadores[i])
             i = i + 1;
         }
     }
