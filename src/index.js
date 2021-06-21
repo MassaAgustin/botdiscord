@@ -202,6 +202,12 @@ clientD.on('message', async (message) => {
         }
     }
 
+    if (command == 'mostrarequipos') {
+        setMensajeEquipos();
+        message.channel.send(mensajeEquipo1);
+        message.channel.send(mensajeEquipo2);
+    }
+
     if (command == 'comandoshelp') {
         const mensajeComandos = new MessageEmbed();
         mensajeComandos.setTitle('Listado de comandos disponibles');
@@ -216,7 +222,8 @@ clientD.on('message', async (message) => {
             { name: 'armarequipo', value: 'Arma un equipo con los jugadores que esten en la cola' },
             { name: 'armarequipo random', value: 'Same de arriba pero random' },
             { name: 'armarequipo []', value: 'Arma un equipo con los jugadores pasados entre espacios' },
-            { name: 'armarequipo [] random', value: 'Same de arriba pero random' }
+            { name: 'armarequipo [] random', value: 'Same de arriba pero random' },
+            { name: 'mostrarequipos', value: 'Muestra los dos equipos'}
         ])
 
         message.channel.send(mensajeComandos);
@@ -234,12 +241,12 @@ clientD.on('message', async (message) => {
         message.channel.send(mensaje);
     }
 
-    if(command == 'equipo1') {
+    if (command == 'equipo1') {
         let parametro = args[0];
         equipo1.name = parametro
     }
 
-    if(command == 'equipo2') {
+    if (command == 'equipo2') {
         let parametro = args[0];
         equipo2.name = parametro
     }
@@ -257,7 +264,7 @@ const getNickName = (player) => {
         "Joaco.mas": "Joaco Purrum",
         rdmarcos49: "truuck",
         Chacha: "El Cogollos",
-        Guichi :"EL BICHO",
+        Guichi: "EL BICHO",
         Dijkstra: "",
         ELECHEE: "ECHOR",
         UnluckyBoy: "UnluckyBoy",
@@ -333,7 +340,6 @@ const setMensajeEquipos = () => {
             mensajeEquipo2.addField(`${player.nick}`, ':ok_hand: :white_check_mark:')
         })
     }
-
 }
 
 const listarPlatitas = () => {
