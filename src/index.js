@@ -157,7 +157,22 @@ clientD.on('message', async (message) => {
 
         (args.length && typeof parametro === 'number')
             ? await message.channel.bulkDelete(parametro)
-            : await message.channel.bulkDelete(1)
+            : await message.channel.bulkDelete(1);
+    }
+
+    if (command == 'txt') {
+
+        const parametros = args[0];
+        let messageText = '';
+
+        if (parametros.length) {
+            parametros.forEach(parametro => {
+                const currentIcon = `:regional_indicator_${parametro}:`;
+                messageText.concat(currentIcon);
+            })
+        }
+        message.channel.bulkDelete(1);
+        message.channel.send(messageText);
     }
 
     //Arma un equipo random con la lista de jugadores, tambien se le puede pasar un array con todos los jugadores
@@ -223,7 +238,7 @@ clientD.on('message', async (message) => {
             { name: 'armarequipo random', value: 'Same de arriba pero random' },
             { name: 'armarequipo []', value: 'Arma un equipo con los jugadores pasados entre espacios' },
             { name: 'armarequipo [] random', value: 'Same de arriba pero random' },
-            { name: 'mostrarequipos', value: 'Muestra los dos equipos'}
+            { name: 'mostrarequipos', value: 'Muestra los dos equipos' }
         ])
 
         message.channel.send(mensajeComandos);
