@@ -162,16 +162,18 @@ clientD.on('message', async (message) => {
 
     if (command == 'txt') {
 
-        const parametros = args[0];
+        const parametros = String(args[0]);
         let messageText = '';
 
         if (parametros.length) {
-            parametros.forEach(parametro => {
-                const currentIcon = `:regional_indicator_${parametro}:`;
+            for (let index = 0; index < parametros.length; index++) {
+                const element = parametros.charCodeAt(index);
+                const currentIcon = `:regional_indicator_${element}:`;
                 messageText.concat(currentIcon);
-            })
+            }
         }
         message.channel.bulkDelete(1);
+        console.log({ messageText });
         message.channel.send(messageText);
     }
 
