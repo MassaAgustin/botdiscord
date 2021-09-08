@@ -172,8 +172,8 @@ clientD.on('message', async (message) => {
                     const currentIcon = `:regional_indicator_${element}:`;
                     messageText = messageText.concat(currentIcon);
                 }
+                messageText = messageText.concat(' ');
             })
-            messageText = messageText.concat(' ');
         }
         message.channel.bulkDelete(1);
         console.log({ messageText });
