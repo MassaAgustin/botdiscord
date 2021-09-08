@@ -169,7 +169,7 @@ clientD.on('message', async (message) => {
             for (let index = 0; index < parametros.length; index++) {
                 const element = parametros.charCodeAt(index);
                 const currentIcon = `:regional_indicator_${element}:`;
-                messageText.concat(currentIcon);
+                messageText = messageText.concat(currentIcon);
             }
         }
         message.channel.bulkDelete(1);
