@@ -167,7 +167,7 @@ clientD.on('message', async (message) => {
 
         if (parametros.length) {
             for (let index = 0; index < parametros.length; index++) {
-                const element = parametros.charCodeAt(index);
+                const element = parametros.charAt(index);
                 const currentIcon = `:regional_indicator_${element}:`;
                 messageText = messageText.concat(currentIcon);
             }
