@@ -43,6 +43,11 @@ clientD.on('clickButton', async (button) => {
     } else {
         await button.reply.send(`Propiedad de ${lastMessage.author.tag}`)
     }
+});
+
+clientD.once("ready", () => {
+    clientD.user.setStatus("online");
+    clientD.user.setActivity("#Node", { type: "STREAMING" }); //
 })
 
 clientD.on('message', async (message) => {
@@ -142,10 +147,19 @@ clientD.on('message', async (message) => {
     if (command == 'limpiar') {
 
         const parametro = Number(args[0]);
-
-        (args.length && typeof parametro === 'number')
-            ? await message.channel.bulkDelete(parametro)
-            : await message.channel.bulkDelete(1);
+        if (args.length && typeof parametro === 'number') {
+            setMensaje('Ok :white_check_mark:', 'success', `${parametro} mensajes eliminados`)
+            await message.channel.bulkDelete(parametro)
+                .then(res => {
+                    message.channel.send(mensaje);
+                })
+        } else {
+            setMensaje()
+            await message.channel.bulkDelete(1)
+                .then(rest => {
+                    message.channel.send(mensaje);
+                });
+        }
     }
 
     if (command == 'txt') {
@@ -165,9 +179,10 @@ clientD.on('message', async (message) => {
                 messageText = messageText.concat(' ');
             })
         }
-        message.channel.bulkDelete(1);
-        console.log({ messageText });
-        message.channel.send(messageText);
+        message.channel.bulkDelete(1).then(res => {
+            console.log({ messageText });
+            message.channel.send(messageText);
+        });
     }
 
     //Arma un equipo random con la lista de jugadores, tambien se le puede pasar un array con todos los jugadores
@@ -277,6 +292,8 @@ const getCurrentIcon = (charCode, char) => {
     if (charCode >= 48 && charCode <= 57) {
         return `:${getStringNumberIcon(charCode)}:`
     }
+
+    return char;
 }
 
 const getStringNumberIcon = (charCode) => {
