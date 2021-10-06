@@ -5,18 +5,6 @@ const clientD = new Client();
 const disbutton = require('discord-buttons');
 disbutton(clientD);
 
-const url = `https://la2.api.riotgames.com/lol/summoner/v4/summoners/by-name/${config.namePlayer}?api_key=${config.api_key_lol}`
-
-fetch(url)
-    .then(function (response) {
-        response.json()
-            .then(res => {
-                console.log(res)
-            })
-    }).catch(function (error) {
-        console.log('Request failed', error)
-    });
-
 //INTRO BOT LA9
 //Modularizar bien todo
 //Llevar luego metodos similares a un archivo js distinto
@@ -168,8 +156,10 @@ clientD.on('message', async (message) => {
         if (parametros.length) {
             args.forEach(arg => {
                 for (let index = 0; index < arg.length; index++) {
-                    const element = arg.charAt(index);
-                    const currentIcon = `:regional_indicator_${element}:`;
+                    const char = arg.charAt(index).toLowerCase();
+                    const charCode = arg.charCodeAt(index);
+                    const currentIcon = getCurrentIcon(charCode, char);
+
                     messageText = messageText.concat(currentIcon);
                 }
                 messageText = messageText.concat(' ');
@@ -271,6 +261,41 @@ clientD.on('message', async (message) => {
         equipo2.name = parametro
     }
 })
+
+const getCurrentIcon = (charCode, char) => {
+
+    if (charCode == 33) return ':exclamation:';
+    if (charCode == 63) return ':question:';
+
+    if (charCode >= 97 && charCode <= 122) {
+        if (charCode == 97) return `:${char}:`;
+        if (charCode == 98) return `:${char}:`;
+        if (charCode == 111) return `:${char}2:`
+        return `:regional_indicator_${char}:`;
+    }
+
+    if (charCode >= 48 && charCode <= 57) {
+        return `:${getStringNumberIcon(charCode)}:`
+    }
+}
+
+const getStringNumberIcon = (charCode) => {
+
+    const stringNumber = {
+        48: 'zero',
+        49: 'one',
+        50: 'two',
+        51: 'three',
+        52: 'four',
+        53: 'five',
+        54: 'six',
+        55: 'seven',
+        56: 'eight',
+        57: 'nine',
+    }
+
+    return stringNumber[charCode];
+}
 
 const getNickName = (player) => {
 
