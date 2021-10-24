@@ -11,9 +11,15 @@ clientD.events = new discord.Collection();
 
 ["commandHandler", "eventHandler"].forEach((file) => {
     require(`./handlers/${file}`)(clientD, discord);
-})
+});
 
-clientD.login("ODUwNjI5ODg5Mjg2OTk1OTg4.YLsg0Q.hsoIMsU2LHDPiD1ZBDAJWvuMD_I");
+clientD.login(process.env.DSTOKEN)
+    .then((success) => {
+        console.log(success);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
 
 clientD.slash = new discord.Collection();
 
@@ -49,7 +55,7 @@ clientD.on("interactionCreate", async (interaction) => {
 
 const memberModel = require("./schemas/memberSchema");
 const mongoose = require('mongoose');
-const uriMongoose = "mongodb+srv://AgusMassa:ModoSennin22@cluster0.bjfw0.mongodb.net/botdiscord?retryWrites=true&w=majority";
+const uriMongoose = process.env.DB;
 
 mongoose
     .connect(uriMongoose, {
