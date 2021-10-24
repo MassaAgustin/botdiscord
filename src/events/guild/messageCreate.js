@@ -14,7 +14,7 @@ module.exports = async (client, discord, message) => {
     const content = message.content.slice("!".length); //Removemos el prefijo.
     const args = content.trim().split(/ +/g); //Dividimos el string en un array con cada palabra.
     const command = args.shift().toLowerCase(); //Extraemos de los argumentos el comando en minusculas.
-    const commandCalled = client.commands.get(command);
+    const commandCalled = client.commands.get(command); //Obtenemos el comando que tenemos precargado, si no existe @returns null.
 
     if (!commandCalled) return message.channel.send("Este comando no existe");
 
