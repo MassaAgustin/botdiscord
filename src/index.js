@@ -1,5 +1,4 @@
 const discord = require('discord.js');
-
 require('dotenv').config();
 
 const clientD = new discord.Client({
@@ -23,18 +22,22 @@ clientD.login(process.env.DSTOKEN)
 
 clientD.slash = new discord.Collection();
 
+/**
+ * @brief Una vez que el bot se ha conectado a discord, se ejecuta el evento ready
+ *
+ * @details Se ejecuta el evento ready, que se encarga de establecer el estado custom del bot
+ */
 clientD.once("ready", (bot) => {
 
-    //** Bot Status */
     clientD.user.setStatus("online");
     clientD.user.setActivity("#Node", { type: "STREAMING" });
-    //** Bot Status */
-
-    //** Helpers commands */
-
-    //** Helpers commands */
 });
 
+/**
+ * @brief Cuando el bot recibe una interaccion, se ejecuta el evento interaction
+ *
+ * @details Se ejecuta el evento interaction, que se encarga de verificar si la interaccion es slash o no.
+ */
 clientD.on("interactionCreate", async (interaction) => {
     if (interaction.isCommand()) {
         await interaction.deferReply({ ephemeral: false })
@@ -53,7 +56,9 @@ clientD.on("interactionCreate", async (interaction) => {
     }
 });
 
-const memberModel = require("./schemas/memberSchema");
+/** Próxima integracion con mongoDB */
+
+/* const memberModel = require("./schemas/memberSchema");
 const mongoose = require('mongoose');
 const uriMongoose = process.env.DB;
 
@@ -68,7 +73,7 @@ mongoose
     })
     .catch(err => {
         console.log(err);
-    });
+    }); */
 
 /* const existsMember = await memberModel.findOne({ memberID: message.author.id });
 if (existsMember) throw new Exception("Este usuario ya existe"); * /
