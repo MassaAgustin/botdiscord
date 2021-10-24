@@ -12,13 +12,7 @@ clientD.events = new discord.Collection();
     require(`./handlers/${file}`)(clientD, discord);
 });
 
-clientD.login(process.env.DSTOKEN)
-    .then((success) => {
-        console.log(success);
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+clientD.login(process.env.DSTOKEN);
 
 clientD.slash = new discord.Collection();
 
