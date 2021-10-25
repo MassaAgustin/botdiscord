@@ -1,20 +1,30 @@
-const discord = require('discord.js');
 require('dotenv').config();
 
+const discord = require('discord.js');
 const clientD = new discord.Client({
     intents: ["GUILDS", "GUILD_MESSAGES"]
 });
 
 clientD.commands = new discord.Collection();
 clientD.events = new discord.Collection();
+clientD.slash = new discord.Collection();
 
-["commandHandler", "eventHandler"].forEach((file) => {
+["commandHandler", "eventHandler", "slashHandler"].forEach((file) => {
     require(`./handlers/${file}`)(clientD, discord);
 });
 
 clientD.login(process.env.DSTOKEN);
 
-clientD.slash = new discord.Collection();
+
+
+
+
+
+
+
+
+
+
 
 /**
  * @brief Una vez que el bot se ha conectado a discord, se ejecuta el evento ready
@@ -32,6 +42,7 @@ clientD.once("ready", (bot) => {
  *
  * @details Se ejecuta el evento interaction, que se encarga de verificar si la interaccion es slash o no.
  */
+
 clientD.on("interactionCreate", async (interaction) => {
     if (interaction.isCommand()) {
         await interaction.deferReply({ ephemeral: false })
