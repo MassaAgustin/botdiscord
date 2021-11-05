@@ -67,9 +67,11 @@ module.exports = {
             conexionCanal.subscribe(reproductor);
 
 
-            interaction.reply({
+            interaction.editReply({
                 embeds: [embed]
             });
+
+            interaction.defer();
 
             reproductor.on(AudioPlayerStatus.Idle, () => conexionCanal.destroy())
         } catch (error) {
