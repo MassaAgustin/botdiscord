@@ -1,7 +1,8 @@
-const youtubeDownload = require("ytdl-core");
+const play = require("play-dl");
+
 const {
     AudioPlayerStatus,
-    StreamType,
+    NoSubscriberBehavior,
     createAudioPlayer,
     createAudioResource,
     joinVoiceChannel,
@@ -26,7 +27,7 @@ module.exports = {
             const voiceChannel = interaction.member.voice.channel;
 
             if (!voiceChannel) {
-                interaction.editReply({ content: "No estas en un canal de voz", ephemeral: true });
+                interaction.reply({ content: "No estas en un canal de voz", ephemeral: true });
                 return;
             }
 
@@ -37,27 +38,40 @@ module.exports = {
                 return;
             }
 
-            const streamVideo = youtubeDownload(videosEncontrados.url, { filter: "audioonly" });
+            const embed = {
+                author: { name: "ElBicho DJ" },
+                title: videosEncontrados.title,
+                description: `${videosEncontrados.description}\n[LINK](${videosEncontrados.url})`,
+                color: "RED",
+                image: { url: `${videosEncontrados.thumbnail.url}` }
+            };
 
-            const connexionCanal = joinVoiceChannel({
+            let streamAudio = await play.stream(videosEncontrados.url);
+
+            const conexionCanal = joinVoiceChannel({
                 channelId: voiceChannel.id,
                 guildId: interaction.guild.id,
-                adapterCreator: interaction.guild.voiceAdapterCreator
+                adapterCreator: interaction.guild.voiceAdapterCreator,
             });
 
-            const recursoAudio = createAudioResource(streamVideo, { inputType: StreamType.Arbitrary, inlineVolume: true });
+            let recursoAudio = createAudioResource(streamAudio.stream, {
+                inputType: streamAudio.type
+            });
 
-            const reproductor = createAudioPlayer({ });
+            let reproductor = createAudioPlayer({
+                behaviors: NoSubscriberBehavior.Play
+            });
 
             reproductor.play(recursoAudio);
-            connexionCanal.subscribe(reproductor);
+
+            conexionCanal.subscribe(reproductor);
+
 
             interaction.editReply({
-                content: `Sonando: ${videosEncontrados.title}`
+                embeds: [embed]
             });
 
-
-            reproductor.on(AudioPlayerStatus.Idle, () => connexionCanal.destroy());
+            reproductor.on(AudioPlayerStatus.Idle, () => conexionCanal.destroy())
         } catch (error) {
             console.error('Error al ejecutar el comando play', error);
         }

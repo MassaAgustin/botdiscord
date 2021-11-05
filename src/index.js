@@ -15,17 +15,6 @@ clientD.slash = new discord.Collection();
 
 clientD.login(process.env.DSTOKEN);
 
-
-
-
-
-
-
-
-
-
-
-
 /**
  * @brief Una vez que el bot se ha conectado a discord, se ejecuta el evento ready
  *
@@ -42,24 +31,6 @@ clientD.once("ready", (bot) => {
  *
  * @details Se ejecuta el evento interaction, que se encarga de verificar si la interaccion es slash o no.
  */
-
-clientD.on("interactionCreate", async (interaction) => {
-    if (interaction.isCommand()) {
-        await interaction.deferReply({ ephemeral: false })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
-    const interactionCommand = clientD.slash.get(interaction.commandName);
-    if (!interactionCommand) return interaction.followUp({ content: "Comando no registrado" });
-
-    try {
-        interactionCommand.run(clientD, interaction, []);
-    } catch (err) {
-        console.log(err);
-    }
-});
 
 /** Próxima integracion con mongoDB */
 

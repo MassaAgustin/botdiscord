@@ -27,4 +27,4 @@ module.exports = (client, discord) => {
     client.on("ready", async () => {
         await client.application.commands.set(slash);
     });
-}
+};
