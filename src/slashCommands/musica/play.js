@@ -67,7 +67,7 @@ module.exports = {
             conexionCanal.subscribe(reproductor);
 
 
-            interaction.editReply({
+            interaction.reply({
                 embeds: [embed]
             });
 
