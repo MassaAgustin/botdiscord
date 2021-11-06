@@ -10,7 +10,27 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+    },
+    lol: {
+        type: Schema.Types.ObjectId,
+        ref: "lol",
+        required: false,
+        default: null
+    },
+    csgo: {
+        type: Schema.Types.ObjectId,
+        ref: "csgo",
+        required: false,
+        default: null
+    },
+    axie: {
+        type: Schema.Types.ObjectId,
+        ref: "axie",
+        required: false,
+        default: null
     }
+}, {
+    timestamps: true
 });
 
 module.exports = model("user", userSchema);
