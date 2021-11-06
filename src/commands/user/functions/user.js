@@ -25,15 +25,13 @@ const createUser = async (id, username) => {
 const associateLolAccount = async (userID, nickName) => {
 
     const lolAccount = await lolModel.create({
-        nickName
-    }, {
-        upsert: true
+        nickName: nickName
     });
 
     console.log(lolAccount)
 
     const userUpdated = await userModel.updateOne({ userID }, {
-        $set: { "lol": lolAccount._id }
+        $set: { lol: lolAccount._id }
     }, {
         upsert: true
     });
@@ -44,7 +42,7 @@ const associateLolAccount = async (userID, nickName) => {
 const associateCsgoAccount = async (userID, nickName) => {
 
     const csgoAccount = await csgoModel.create({
-        nickName
+        nickName: nickName
     });
 
     const userUpdated = await userModel.updateOne({ userID }, {
@@ -59,7 +57,7 @@ const associateCsgoAccount = async (userID, nickName) => {
 const associateAxieAccount = async (userID, nickName) => {
 
     const axieAccount = await axieModel.create({
-        nickName
+        nickName: nickName
     });
 
     const userUpdated = await userModel.updateOne({ userID }, {
