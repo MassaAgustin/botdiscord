@@ -8,7 +8,7 @@ module.exports = async (client, discord, message) => {
     if (message.author.bot) return;
 
     //No seguimos si el mensaje no está en el canal de comandos
-    if (message.channelId != "850829544147255316" || message.channel.name != "comandos") return;
+    if (message.channel.name != "comandos") return;
 
     //Seguimos solo si se ejecuto con el prefijo configurado
     if (!message.content.startsWith(prefix)) return;

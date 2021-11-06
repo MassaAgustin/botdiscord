@@ -27,6 +27,7 @@
     "discord-ytdl-core": "^5.0.4",
     "discord.js": "^13.2.0",
     "dotenv": "^10.0.0",
+    "mongoose": "^6.0.12",
     "node-fetch": "^2.6.1",
     "play-dl": "^1.2.6",
     "yt-search": "^2.10.2",
