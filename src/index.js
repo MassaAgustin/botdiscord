@@ -42,3 +42,7 @@ clientD.once("ready", (bot) => {
     clientD.user.setStatus("online");
     clientD.user.setActivity("#Node", { type: "STREAMING" });
 });
+
+clientD.once("guildMemberAdd", (member) => {
+    member.send(`Bienvenido! ${member.displayName}`);
+})
