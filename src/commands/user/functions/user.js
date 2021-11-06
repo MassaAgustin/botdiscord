@@ -7,6 +7,8 @@ const userExists = async (id) => {
 
     const user = await userModel.findOne({ userID: id }).populate("lol").populate("csgo").populate("axie");
 
+    console.log(user);
+
     return user;
 }
 
@@ -22,46 +24,49 @@ const createUser = async (id, username) => {
     return newUser;
 }
 
-const associateLolAccount = async (userID, nickName) => {
+const associateLolAccount = async (user_id, nickName) => {
 
     const lolAccount = await lolModel.create({
         nickName: nickName
     });
 
-    console.log(lolAccount)
-
-    const userUpdated = await userModel.updateOne({ userID }, {
+    const userUpdated = await userModel.findByIdAndUpdate({ user_id }, {
         $set: { lol: lolAccount._id }
     }, {
+        new: true,
         upsert: true
     });
 
     return lolAccount;
 }
 
-const associateCsgoAccount = async (userID, nickName) => {
+const associateCsgoAccount = async (user_id, nickName) => {
 
     const csgoAccount = await csgoModel.create({
         nickName: nickName
     });
 
-    const userUpdated = await userModel.updateOne({ userID }, {
-        $set: { "csgo": csgoAccount._id }
+    const userUpdated = await userModel.findByIdAndUpdate({ user_id }, {
+        $set: { csgo: csgoAccount._id }
     }, {
+        new: true,
         upsert: true
     });
 
     return csgoAccount;
 }
 
-const associateAxieAccount = async (userID, nickName) => {
+const associateAxieAccount = async (user_id, nickName) => {
 
     const axieAccount = await axieModel.create({
         nickName: nickName
     });
 
-    const userUpdated = await userModel.updateOne({ userID }, {
-        $set: { "axie": axieAccount._id }
+    const userUpdated = await userModel.findByIdAndUpdate({ user_id }, {
+        $set: { axie: axieAccount._id }
+    }, {
+        new: true,
+        upsert: true
     });
 
     return axieAccount;
