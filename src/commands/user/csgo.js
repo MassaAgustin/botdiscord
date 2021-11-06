@@ -18,7 +18,7 @@ module.exports = {
                     } else {
                         const csgoAccount = associateCsgoAccount(user.userID, args[0]);
 
-                        message.channel.send(`Cuenta de csgo ${csgoAccount.nickName} asociada a ${user.userName}`);
+                        message.channel.send(`Cuenta de csgo ${csgoAccount.nickName} asociada a ${user.username}`);
                     }
                 } else {
                     message.channel.send('Antes de crear una cuenta de csgo, registrate con el comando !user');

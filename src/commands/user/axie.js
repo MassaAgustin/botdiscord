@@ -18,7 +18,7 @@ module.exports = {
                     } else {
                         const axieAccount = associateAxieAccount(user.userID, args[0]);
 
-                        message.channel.send(`Cuenta de axie ${csgoAccount.axie} asociada a ${user.userName}`);
+                        message.channel.send(`Cuenta de axie ${axieAccount.nickName} asociada a ${user.username}`);
                     }
                 } else {
                     message.channel.send('Antes de crear una cuenta de axie, registrate con el comando !user');

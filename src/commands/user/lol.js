@@ -18,7 +18,7 @@ module.exports = {
                     } else {
                         const lolAccount = associateLolAccount(user.userID, args[0]);
 
-                        message.channel.send(`Cuenta de lol ${lolAccount.nickName} asociada a ${user.userName}`);
+                        message.channel.send(`Cuenta de lol ${lolAccount.nickName} asociada a ${user.username}`);
                     }
                 } else {
                     message.channel.send('Antes de crear una cuenta de lol, registrate con el comando !user');

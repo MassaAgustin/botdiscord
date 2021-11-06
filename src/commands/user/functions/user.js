@@ -7,8 +7,6 @@ const userExists = async (id) => {
 
     const user = await userModel.findOne({ userID: id }).populate("lol").populate("csgo").populate("axie");
 
-    console.log(user);
-
     return user;
 }
 
@@ -28,13 +26,19 @@ const associateLolAccount = async (userID, nickName) => {
 
     const lolAccount = await lolModel.create({
         nickName
+    }, {
+        upsert: true
     });
+
+    console.log(lolAccount)
 
     const userUpdated = await userModel.updateOne({ userID }, {
-        $set: { lol: lolAccount }
+        $set: { "lol": lolAccount._id }
+    }, {
+        upsert: true
     });
 
-    return userUpdated;
+    return lolAccount;
 }
 
 const associateCsgoAccount = async (userID, nickName) => {
@@ -44,10 +48,12 @@ const associateCsgoAccount = async (userID, nickName) => {
     });
 
     const userUpdated = await userModel.updateOne({ userID }, {
-        $set: { csgo: csgoAccount }
+        $set: { "csgo": csgoAccount._id }
+    }, {
+        upsert: true
     });
 
-    return userUpdated;
+    return csgoAccount;
 }
 
 const associateAxieAccount = async (userID, nickName) => {
@@ -57,10 +63,10 @@ const associateAxieAccount = async (userID, nickName) => {
     });
 
     const userUpdated = await userModel.updateOne({ userID }, {
-        $set: { axie: axieAccount }
+        $set: { "axie": axieAccount._id }
     });
 
-    return userUpdated;
+    return axieAccount;
 }
 
 module.exports = {
