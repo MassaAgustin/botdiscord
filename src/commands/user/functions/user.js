@@ -5,7 +5,9 @@ const axieModel = require("../../../schemas/axieSchema");
 
 const userExists = async (id) => {
 
-    const user = await userModel.findOne({ userID: id });
+    const user = await userModel.findOne({ userID: id }).populate("lol").populate("csgo").populate("axie");
+
+    console.log(user);
 
     return user;
 }
