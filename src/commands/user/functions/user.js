@@ -2,6 +2,7 @@ const userModel = require("../../../schemas/userSchema");
 const lolModel = require("../../../schemas/lolSchema");
 const csgoModel = require("../../../schemas/csgoSchema");
 const axieModel = require("../../../schemas/axieSchema");
+const mir4Model = require("../../../schemas/mir4Schema");
 
 const userExists = async (id) => {
 
@@ -33,7 +34,6 @@ const associateLolAccount = async (user_id, nickName) => {
     const userUpdated = await userModel.findByIdAndUpdate({ user_id }, {
         $set: { lol: lolAccount._id }
     }, {
-        new: true,
         upsert: true
     });
 
@@ -49,7 +49,6 @@ const associateCsgoAccount = async (user_id, nickName) => {
     const userUpdated = await userModel.findByIdAndUpdate({ user_id }, {
         $set: { csgo: csgoAccount._id }
     }, {
-        new: true,
         upsert: true
     });
 
@@ -65,11 +64,25 @@ const associateAxieAccount = async (user_id, nickName) => {
     const userUpdated = await userModel.findByIdAndUpdate({ user_id }, {
         $set: { axie: axieAccount._id }
     }, {
-        new: true,
         upsert: true
     });
 
     return axieAccount;
+}
+
+const associateMir4Account = async (user_id, nickName) => {
+
+    const mir4Account = await mir4Model.create({
+        nickName: nickName
+    });
+
+    const userUpdated = await userModel.findByIdAndUpdate({ user_id }, {
+        $set: { mir4: mir4Account._id }
+    }, {
+        upsert: true
+    });
+
+    return mir4Account;
 }
 
 module.exports = {
@@ -77,5 +90,6 @@ module.exports = {
     userExists,
     associateLolAccount,
     associateCsgoAccount,
-    associateAxieAccount
+    associateAxieAccount,
+    associateMir4Account
 }
