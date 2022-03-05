@@ -5,7 +5,7 @@ module.exports = async (client, discord, interaction) => {
 
     const interactionCommand = client.slash.get(interaction.commandName);
 
-    if (!interactionCommand) return interaction.reply("Comando no registrado");
+    if (!interactionCommand) return interaction.reply({ content: "Comando no registrado", ephemeral: true });
 
       try {
         interactionCommand.run(client, interaction);
