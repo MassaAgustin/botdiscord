@@ -10,8 +10,6 @@ module.exports = {
             const { id, username } = message.author;
             const user = await userExists(id);
 
-            console.log(user);
-
             if (user) {
                 message.channel.send(`${username}, ya tienes una cuenta creada.`);
                 message.channel.send(`Id: ${user.userID}`);

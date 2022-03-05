@@ -27,7 +27,10 @@ const mir4Schema = new Schema({
         default: "Indefinida"
     }
 }, {
-    timestamps: true
+    timestamps: {
+        createdAt: "Fecha cracion",
+        updatedAt: "Fecha actualizacion"
+    }
 });
 
 module.exports = model("mir4", mir4Schema);

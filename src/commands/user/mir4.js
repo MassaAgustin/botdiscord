@@ -16,18 +16,18 @@ module.exports = {
                     if (user.mir4) {
                         message.channel.send(`${username.mir4}, ya tienes una cuenta de mir4 creada.`);
                     } else {
-                        console.log(user);
-                        const mir4Account = associateMir4Account(user._id, args[0]);
+                        associateMir4Account(user, args[0]);
 
-                        message.channel.send(`Cuenta de mir4 ${mir4Account.nickName} asociada a ${user.username}`);
+                        message.channel.send(`Cuenta de mir4 asociada`);
                     }
                 } else {
                     message.channel.send('Antes de crear una cuenta de mir4, registrate con el comando !user');
                 }
+            } else {
+                message.channel.send('Comando válido: !mir4 Nickname');
             }
 
         } catch (error) {
-            console.log(error);
             message.channel.send('Error al crear cuenta de mir4');
         }
     }

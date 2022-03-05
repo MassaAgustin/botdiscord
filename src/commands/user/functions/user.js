@@ -3,13 +3,15 @@ const lolModel = require("../../../schemas/lolSchema");
 const csgoModel = require("../../../schemas/csgoSchema");
 const axieModel = require("../../../schemas/axieSchema");
 const mir4Model = require("../../../schemas/mir4Schema");
-const { Types } = require('mongoose');
 
 const userExists = async (id) => {
 
-    const user = await userModel.findOne({ userID: id }).populate("lol").populate("csgo").populate("axie");
+    const user =
+        await userModel
+            .findOne({ userID: id })
+            .populate('mir4', '-_id -__v');
 
-    console.log(user);
+    console.log({ user });
 
     return user;
 }
@@ -71,19 +73,29 @@ const associateAxieAccount = async (user_id, nickName) => {
     return axieAccount;
 }
 
-const associateMir4Account = async (user_id, nickName) => {
+const associateMir4Account = async (user, nickName) => {
 
-    const mir4Account = await mir4Model.create({
-        nickName: nickName
-    });
+    let mir4Account = await mir4Model.findOne({ nickName: nickName });
 
-    console.log({ mir4Account });
+    if (!mir4Account) {
+        mir4Account = await mir4Model.create({
+            nickName: nickName
+        });
+    }
 
-    const userUpdated = await userModel.findByIdAndUpdate({ user_id }, {
-        $set: { mir4: Types.ObjectId(mir4Account._id) }
-    }, {
-        upsert: true
-    });
+    if (!user.mir4) {
+
+        const userUpdated =
+            await userModel
+                .updateOne(
+                    {
+                        _id: user._id
+                    },
+                    {
+                        $set: { mir4: mir4Account._id }
+                    }
+                );
+    }
 
     return mir4Account;
 }
