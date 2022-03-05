@@ -11,8 +11,6 @@ module.exports = {
             const user = await userExists(id);
 
             if (user) {
-                message.channel.send(`${username}, ya tienes una cuenta creada.`);
-                message.channel.send(`Id: ${user.userID}`);
                 message.channel.send(`User:${user.userName}`);
                 //message.channel.send(`${user.lol ? `nickLol: ${user.lol}` : 'Sin cuenta de lol'}`);
                 //message.channel.send(`${user.csgo ? `nickCsgo: ${user.csgo}` : 'Sin cuenta de csgo'}`);
