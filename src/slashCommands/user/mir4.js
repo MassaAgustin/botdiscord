@@ -86,8 +86,10 @@ module.exports = {
             if (poder) userPropsToUpdate.poder = poder;
             if (nivel) userPropsToUpdate.nivel = nivel;
 
+            console.log({ userPropsToUpdate });
 
-            const userUpdated = await userModel.findOneAndUpdate(
+
+            const userUpdated = await userModel.updateOne(
                 { userID: userInteraction.id },
                 { $set: userPropsToUpdate }
             );
