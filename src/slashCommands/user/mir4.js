@@ -63,38 +63,44 @@ module.exports = {
         const userInteraction = interaction.user;
         const user = await userModel.findOne({ userID: userInteraction.id });
 
-        interaction.reply({ content: "Buscando cuenta...", ephemeral: true });
+        try {
 
-        if (!user) {
-            interaction.editReply({ content: "No tienes una cuenta de mir4", ephemeral: true });
-            return false;
+            interaction.reply({ content: "Buscando cuenta...", ephemeral: true });
+
+            if (!user) {
+                interaction.editReply({ content: "No tienes una cuenta de mir4", ephemeral: true });
+                return false;
+            }
+
+            const optionInteraction = interaction.options;
+            const userPropsToUpdate = {};
+
+            const nickName = optionInteraction.getString("nickname");
+            const clase = optionInteraction.getString("clase");
+            const subclase = optionInteraction.getString("subclase");
+            const clan = optionInteraction.getString("clan");
+            const poder = optionInteraction.getNumber("poder");
+            const nivel = optionInteraction.getNumber("nivel");
+
+            if (nickName) userPropsToUpdate.nickName = nickName;
+            if (clase) userPropsToUpdate.clase = clase;
+            if (subclase) userPropsToUpdate.subclase = subclase;
+            if (clan) userPropsToUpdate.clan = clan;
+            if (poder) userPropsToUpdate.poder = poder;
+            if (nivel) userPropsToUpdate.nivel = nivel;
+
+
+            const userUpdated = await userModel.updateOne({ userID: userInteraction.id }, userPropsToUpdate);
+            let content = 'Actualizado correctamente';
+
+            if (!userUpdated) {
+                content = 'No se pudo actualizar el usuario' + userUpdated;
+            }
+
+            interaction.editReply({ content: content, ephemeral: true });
+
+        } catch (error) {
+            interaction.editReply({ content: error.message, ephemeral: true });
         }
-
-        const optionInteraction = interaction.options;
-        const userPropsToUpdate = {};
-
-        const nickName = optionInteraction.getString("nickname");
-        const clase = optionInteraction.getString("clase");
-        const subclase = optionInteraction.getString("subclase");
-        const clan = optionInteraction.getString("clan");
-        const poder = optionInteraction.getNumber("poder");
-        const nivel = optionInteraction.getNumber("nivel");
-
-        if (nickName) userPropsToUpdate.nickName = nickName;
-        if (clase) userPropsToUpdate.clase = clase;
-        if (subclase) userPropsToUpdate.subclase = subclase;
-        if (clan) userPropsToUpdate.clan = clan;
-        if (poder) userPropsToUpdate.poder = poder;
-        if (nivel) userPropsToUpdate.nivel = nivel;
-
-
-        const userUpdated = await userModel.updateOne({ userID: userInteraction.id }, userPropsToUpdate);
-        let content = 'Actualizado correctamente';
-
-        if (!userUpdated) {
-            content = 'No se pudo actualizar el usuario' + userUpdated;
-        }
-
-        interaction.editReply({ content: content, ephemeral: true });
     }
 }
