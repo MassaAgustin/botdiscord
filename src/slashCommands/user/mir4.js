@@ -88,11 +88,13 @@ module.exports = {
 
             console.log({ userPropsToUpdate });
 
-
             const userUpdated = await userModel.updateOne(
                 { userID: userInteraction.id },
                 { $set: userPropsToUpdate }
             );
+
+            console.log({ userUpdated });
+
             let content = 'Actualizado correctamente';
 
             if (!userUpdated) {
