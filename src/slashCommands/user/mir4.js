@@ -65,7 +65,7 @@ module.exports = {
 
         try {
 
-            await interaction.reply({ content: "Buscando cuenta...", fetchReply: true });
+            await interaction.editReply({ content: "Buscando cuenta...", fetchReply: true });
 
             if (!user) {
                 await interaction.editReply({ content: "No tienes una cuenta de mir4", fetchReply: true });
