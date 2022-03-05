@@ -1,4 +1,5 @@
 const userModel = require("../../schemas/userSchema");
+const mir4Model = require("../../schemas/mir4Schema");
 const clasesMir4 = [
     { name: "Hechicero", value: "Hechicero" },
     { name: "Guerrero", value: "Guerrero" },
@@ -61,13 +62,12 @@ module.exports = {
     run: async (client, interaction) => {
 
         const userInteraction = interaction.user;
-        const user = await userModel.findOne({ userID: userInteraction.id });
 
         try {
 
-            //interaction.reply({ content: "Buscando cuenta...", ephemeral: true });
-
-            if (!user) return interaction.reply({ content: "No tienes una cuenta de mir4", ephemeral: true });
+            const user = await userModel.findOne({ userID: userInteraction.id });
+            if (!user) return interaction.reply({ content: "Aun no eres usuario", ephemeral: true });
+            if (!user.mir4) return interaction.reply({ content: "Aun no tienes cuenta de mir4", ephemeral: true });
 
             const optionInteraction = interaction.options;
             const userPropsToUpdate = {};
@@ -88,17 +88,17 @@ module.exports = {
 
             console.log({ userPropsToUpdate });
 
-            const userUpdated = await userModel.updateOne(
-                { userID: userInteraction.id },
+            const mir4Updated = await mir4Model.updateOne(
+                { _id: user.mir4 },
                 { $set: userPropsToUpdate }
             );
 
-            console.log({ userUpdated });
+            console.log({ mir4Updated });
 
             let content = 'Actualizado correctamente';
 
-            if (!userUpdated) {
-                content = 'No se pudo actualizar el usuario' + userUpdated;
+            if (!mir4Updated) {
+                content = 'No se pudo actualizar el usuario' + mir4Updated;
             }
 
             return interaction.reply({ content: content, ephemeral: true });
