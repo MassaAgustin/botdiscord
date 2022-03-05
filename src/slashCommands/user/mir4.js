@@ -62,7 +62,7 @@ module.exports = {
 
         const userInteraction = interaction.user;
         const user = await userModel.findOne({ userID: userInteraction.id });
-        if (!user) return interaction.reply({ content: "No tienes una cuenta de mir4", ephemeral: true });
+        if (!user) return interaction.editReply({ content: "No tienes una cuenta de mir4", ephemeral: true });
 
         const optionInteraction = interaction.options;
         const userPropsToUpdate = {};
