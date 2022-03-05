@@ -62,7 +62,7 @@ module.exports = {
 
         const userInteraction = interaction.user;
         const user = await userModel.findOne({ userID: userInteraction.id });
-        if (!user) return interaction.reply({ content: "No tienes una cuenta de mir4", ephemeral: true });
+        if (!user) return await interaction.reply({ content: "No tienes una cuenta de mir4", ephemeral: true });
 
         const optionInteraction = interaction.options;
         const userPropsToUpdate = {};
@@ -82,7 +82,13 @@ module.exports = {
         if (nivel) userPropsToUpdate.nivel = nivel;
 
 
-        userModel.updateOne({ userID: userInteraction.id }, userPropsToUpdate);
-        interaction.reply({ content: "Actualizado correctamente", ephemeral: true });
+        const userUpdated = await userModel.updateOne({ userID: userInteraction.id }, userPropsToUpdate);
+        let content = 'Actualizado correctamente';
+
+        if(!userUpdated) {
+            content = 'No se pudo actualizar el usuario' + userUpdated;
+        }
+
+        return await interaction.reply({ content: content, ephemeral: true });
     }
 }
