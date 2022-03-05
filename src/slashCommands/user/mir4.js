@@ -83,6 +83,6 @@ module.exports = {
 
 
         userModel.updateOne({ userID: userInteraction.id }, userPropsToUpdate);
-        interaction.reply({ content: "Actualizado correctamente", ephemeral: true });
+        interaction.editReply({ content: "Actualizado correctamente", ephemeral: true });
     }
 }
