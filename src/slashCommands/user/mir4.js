@@ -87,7 +87,10 @@ module.exports = {
             if (nivel) userPropsToUpdate.nivel = nivel;
 
 
-            const userUpdated = await userModel.updateOne({ userID: userInteraction.id }, userPropsToUpdate);
+            const userUpdated = await userModel.updateOne(
+                { userID: userInteraction.id },
+                { $set: userPropsToUpdate }
+            );
             let content = 'Actualizado correctamente';
 
             if (!userUpdated) {
