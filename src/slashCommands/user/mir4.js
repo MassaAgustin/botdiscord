@@ -65,10 +65,10 @@ module.exports = {
 
         try {
 
-            interaction.reply({ content: "Buscando cuenta...", ephemeral: true });
+            await interaction.editReply({ content: "Buscando cuenta...", ephemeral: false });
 
             if (!user) {
-                interaction.editReply({ content: "No tienes una cuenta de mir4", ephemeral: true });
+                await interaction.editReply({ content: "No tienes una cuenta de mir4", ephemeral: false });
                 return false;
             }
 
@@ -97,10 +97,10 @@ module.exports = {
                 content = 'No se pudo actualizar el usuario' + userUpdated;
             }
 
-            interaction.editReply({ content: content, ephemeral: true });
+            await interaction.editReply({ content: content, ephemeral: false });
 
         } catch (error) {
-            interaction.editReply({ content: error.message, ephemeral: true });
+            await interaction.editReply({ content: error.message, ephemeral: false });
         }
     }
 }
