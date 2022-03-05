@@ -67,7 +67,7 @@ module.exports = {
 
             interaction.reply("Buscando cuenta...");
 
-            if (!user) return interaction.reply("No tienes una cuenta de mir4");
+            if (!user) return interaction.editReply("No tienes una cuenta de mir4");
 
             const optionInteraction = interaction.options;
             const userPropsToUpdate = {};
@@ -94,10 +94,10 @@ module.exports = {
                 content = 'No se pudo actualizar el usuario' + userUpdated;
             }
 
-            return interaction.reply(content);
+            return interaction.editReply(content);
 
         } catch (error) {
-            return interaction.reply(error.message);
+            return interaction.editReply(error.message);
         }
     }
 }
