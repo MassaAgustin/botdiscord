@@ -28,6 +28,12 @@ const userSchema = new Schema({
         ref: "axie",
         required: false,
         default: null
+    },
+    mir4: {
+        type: Schema.Types.ObjectId,
+        ref: "mir4",
+        required: false,
+        default: null
     }
 }, {
     timestamps: true

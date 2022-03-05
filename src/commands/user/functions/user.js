@@ -3,6 +3,7 @@ const lolModel = require("../../../schemas/lolSchema");
 const csgoModel = require("../../../schemas/csgoSchema");
 const axieModel = require("../../../schemas/axieSchema");
 const mir4Model = require("../../../schemas/mir4Schema");
+const { Types } = require('mongoose');
 
 const userExists = async (id) => {
 
@@ -76,8 +77,10 @@ const associateMir4Account = async (user_id, nickName) => {
         nickName: nickName
     });
 
+    console.log({ mir4Account });
+
     const userUpdated = await userModel.findByIdAndUpdate({ user_id }, {
-        $set: { mir4: mir4Account._id }
+        $set: { mir4: Types.ObjectId(mir4Account._id) }
     }, {
         upsert: true
     });
