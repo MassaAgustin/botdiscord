@@ -65,9 +65,9 @@ module.exports = {
 
         try {
 
-            interaction.reply({ content: "Buscando cuenta...", ephemeral: true });
+            //interaction.reply({ content: "Buscando cuenta...", ephemeral: true });
 
-            if (!user) return interaction.editReply({ content: "No tienes una cuenta de mir4", ephemeral: true });
+            if (!user) return interaction.reply({ content: "No tienes una cuenta de mir4", ephemeral: true });
 
             const optionInteraction = interaction.options;
             const userPropsToUpdate = {};
@@ -94,10 +94,10 @@ module.exports = {
                 content = 'No se pudo actualizar el usuario' + userUpdated;
             }
 
-            return interaction.editReply({ content: content, ephemeral: true });
+            return interaction.reply({ content: content, ephemeral: true });
 
         } catch (error) {
-            return interaction.editReply({ content: error.message, ephemeral: true });
+            return interaction.reply({ content: error.message, ephemeral: true });
         }
     }
 }
