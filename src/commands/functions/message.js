@@ -8,7 +8,7 @@ const { MessageEmbed } = require("discord.js");
  * @param {*} description String - Texto que forma parte del cuerpo (letra chica) - "ejemplo descripcion"
  * @returns MessageEmbed - Con la especificacion que se le indico en los parametros
  */
-const getEmbedMessage = (title, color, description) => {
+const getEmbedMessage = (title, color, description, rows = null) => {
 
     const mensaje = new MessageEmbed();
 
@@ -33,6 +33,13 @@ const getEmbedMessage = (title, color, description) => {
     mensaje.setTitle(title);
     mensaje.setColor(messageType);
     mensaje.setDescription(description)
+
+    if (rows) {
+        Object.entries(rows)
+            .forEach(([key, value]) => {
+                mensaje.addField(key, value);
+            });
+    }
 
     return mensaje;
 }

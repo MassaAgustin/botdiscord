@@ -1,9 +1,10 @@
 const userModel = require("../../schemas/userSchema");
 const mir4Model = require("../../schemas/mir4Schema");
+
 const clasesMir4 = [
-    { name: "Hechicero", value: "Hechicero" },
+    { name: "Hechicera", value: "Hechicera" },
     { name: "Guerrero", value: "Guerrero" },
-    { name: "Arbalista", value: "Arbalista" },
+    { name: "Ballestera", value: "Ballestera" },
     { name: "Taoista", value: "Taoista" },
     { name: "Lancero", value: "Lancero" },
     { name: "Ninguna", value: "Ninguna" },
@@ -86,14 +87,10 @@ module.exports = {
             if (poder) userPropsToUpdate.poder = poder;
             if (nivel) userPropsToUpdate.nivel = nivel;
 
-            console.log({ userPropsToUpdate });
-
             const mir4Updated = await mir4Model.updateOne(
                 { _id: user.mir4 },
                 { $set: userPropsToUpdate }
             );
-
-            console.log({ mir4Updated });
 
             let content = 'Actualizado correctamente';
 

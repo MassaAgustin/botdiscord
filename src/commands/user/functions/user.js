@@ -11,9 +11,12 @@ const userExists = async (id) => {
             .findOne({ userID: id })
             .populate('mir4', '-_id -__v');
 
-    console.log({ user });
-
     return user;
+}
+
+const getAccountMir4 = async (nickName) => {
+
+    return await mir4Model.findOne({ nickName: nickName }, '-_id -__v');
 }
 
 const createUser = async (id, username) => {
@@ -106,5 +109,6 @@ module.exports = {
     associateLolAccount,
     associateCsgoAccount,
     associateAxieAccount,
-    associateMir4Account
+    associateMir4Account,
+    getAccountMir4
 }
