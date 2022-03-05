@@ -65,12 +65,9 @@ module.exports = {
 
         try {
 
-            await interaction.editReply({ content: "Buscando cuenta...", fetchReply: true });
+            interaction.reply("Buscando cuenta...");
 
-            if (!user) {
-                await interaction.editReply({ content: "No tienes una cuenta de mir4", fetchReply: true });
-                return false;
-            }
+            if (!user) return interaction.reply("No tienes una cuenta de mir4");
 
             const optionInteraction = interaction.options;
             const userPropsToUpdate = {};
@@ -97,10 +94,10 @@ module.exports = {
                 content = 'No se pudo actualizar el usuario' + userUpdated;
             }
 
-            await interaction.editReply({ content: content, fetchReply: false });
+            return interaction.reply(content);
 
         } catch (error) {
-            await interaction.editReply({ content: error.message, fetchReply: false });
+            return interaction.reply(error.message);
         }
     }
 }
