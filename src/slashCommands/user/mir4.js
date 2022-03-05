@@ -62,8 +62,11 @@ module.exports = {
 
         const userInteraction = interaction.user;
         const user = await userModel.findOne({ userID: userInteraction.id });
+
+        interaction.reply({ content: "Buscando cuenta...", ephemeral: true });
+
         if (!user) {
-            await interaction.reply({ content: "No tienes una cuenta de mir4", ephemeral: true });
+            interaction.editReply({ content: "No tienes una cuenta de mir4", ephemeral: true });
             return false;
         }
 
@@ -92,6 +95,6 @@ module.exports = {
             content = 'No se pudo actualizar el usuario' + userUpdated;
         }
 
-        await interaction.editReply({ content: content, ephemeral: true });
+        interaction.editReply({ content: content, ephemeral: true });
     }
 }
