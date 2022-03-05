@@ -16,15 +16,20 @@ const mir4Schema = new Schema({
         required: false,
         default: 1
     },
+    clan: {
+        type: String,
+        required: false,
+        default: "Ninguno"
+    },
     clase: {
         type: String,
         required: false,
-        default: "Indefinida"
+        default: "Ninguno"
     },
     subclase: {
         type: String,
         required: false,
-        default: "Indefinida"
+        default: "Ninguno"
     }
 }, {
     timestamps: {
