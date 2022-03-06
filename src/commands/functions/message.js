@@ -13,7 +13,7 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const getEmbedMessage = (title, color, description, rows = null) => {
+const getEmbedMessage = (title, color, description = null, rows = null) => {
 
     const mensaje = new MessageEmbed();
 
@@ -37,7 +37,7 @@ const getEmbedMessage = (title, color, description, rows = null) => {
     }
     mensaje.setTitle(title);
     mensaje.setColor(messageType);
-    mensaje.setDescription(description)
+    if (description) mensaje.setDescription(description)
 
 
     if (rows) {
@@ -47,7 +47,7 @@ const getEmbedMessage = (title, color, description, rows = null) => {
                 console.log(typeof value);
                 if (typeof value == 'object') {
                     const date = new Date(value);
-                    value = `${date.toLocaleDateString('es-ES')} a las ${date.toLocaleTimeString('es-ES')}` ;
+                    value = `${date.toLocaleDateString('es-ES')} a las ${date.toLocaleTimeString('es-ES')}`;
                 }
                 mensaje.addField(`${capitalizeFirstLetter(key)}`, `${value}`);
             });

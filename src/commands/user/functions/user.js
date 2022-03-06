@@ -3,6 +3,12 @@ const lolModel = require("../../../schemas/lolSchema");
 const csgoModel = require("../../../schemas/csgoSchema");
 const axieModel = require("../../../schemas/axieSchema");
 const mir4Model = require("../../../schemas/mir4Schema");
+const eventoModel = require("../../../schemas/eventoSchema");
+const expedicionModel = require("../../../schemas/expedicionSchema");
+const desafioModel = require("../../../schemas/desafioSchema");
+
+const NAME_EXPEDICION = "Expedicion";
+const NAME_DESAFIO = "Desafio";
 
 const userExists = async (id) => {
 
@@ -12,6 +18,45 @@ const userExists = async (id) => {
             .populate('mir4', '-_id -__v');
 
     return user;
+}
+
+const crearParticipacionEvento = async (evento, mir4) => {
+
+    const existEvent = await eventoModel.findOne({ nombre: evento });
+
+    if (!existEvent) throw new Error(`No existe el evento ${evento}`);
+
+    let participacionCreada = null;
+
+    switch (evento) {
+        case NAME_EXPEDICION:
+            participacionCreada = await crearDesafio(existEvent._id, mir4);
+            break;
+        case NAME_DESAFIO:
+            participacionCreada = await crearExpedicion(existEvent._id, mir4);
+            break;
+    }
+
+    return participacionCreada.save();
+}
+
+const crearDesafio = (idEvento, idMir4) => {
+    return desafioModel.create({ evento: idEvento, mir4: idMir4 });
+}
+
+const crearExpedicion = (idEvento, idMir4) => {
+    return expedicionModel.create({ evento: idEvento, mir4: idMir4 });
+}
+
+
+const getCantidadUsuarios = async () => {
+
+    return await userModel.find({}).countDocuments();
+}
+
+const getCantidadUsuariosMir4 = async () => {
+
+    return await mir4Model.find({}).countDocuments();
 }
 
 const getAccountMir4 = async (nickName) => {
@@ -110,5 +155,8 @@ module.exports = {
     associateCsgoAccount,
     associateAxieAccount,
     associateMir4Account,
-    getAccountMir4
+    getAccountMir4,
+    getCantidadUsuarios,
+    getCantidadUsuariosMir4,
+    crearParticipacionEvento
 }
