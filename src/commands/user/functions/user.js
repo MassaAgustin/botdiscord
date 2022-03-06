@@ -30,10 +30,10 @@ const crearParticipacionEvento = async (evento, mir4) => {
 
     switch (evento) {
         case NAME_EXPEDICION:
-            participacionCreada = await crearDesafio(existEvent._id, mir4);
+            participacionCreada = await crearExpedicion(existEvent._id, mir4);
             break;
         case NAME_DESAFIO:
-            participacionCreada = await crearExpedicion(existEvent._id, mir4);
+            participacionCreada = await crearDesafio(existEvent._id, mir4);
             break;
     }
 
@@ -47,6 +47,8 @@ const getParticipantesEvento = async (evento, dia, mes, anio) => {
 
     let participantes = null;
 
+    console.log({ evento, dia, mes, anio })
+
     switch (evento) {
         case NAME_EXPEDICION:
             participantes = await getParticipantesExpedicion(existEvent._id, dia, mes, anio);
@@ -55,30 +57,41 @@ const getParticipantesEvento = async (evento, dia, mes, anio) => {
             participantes = await getParticipantesDesafio(existEvent._id, dia, mes, anio);
     }
 
+
+    for (let i = 0; i < participantes.length; i++) {
+
+        participantes[i] = participantes[i].mir4.nickName;
+    }
+
     console.log(participantes);
+
+    return participantes;
 }
 
 const getParticipantesDesafio = async (idEvento, dia, mes, anio) => {
 
-    const participantes = await desafioModel
-        .findOne({ evento: idEvento, Participacion: `${anio}-${mes}-${dia}` })
-        .populate('mir4', '-_id -__v');
+    console.log({ idEvento });
 
 
-    console.log(participantes)
 
-    //return desafio.mir4;
+    const participantes =
+        await desafioModel
+            .find({ evento: idEvento })
+            .select('mir4 -_id')
+            .populate('mir4', '-_id -__v');
+
+
+    return participantes;
 }
 
 const getParticipantesExpedicion = async (idEvento, dia, mes, anio) => {
 
-    const participantes = await expedicionModel
-        .findOne({ evento: idEvento, Participacion: `${anio}-${mes}-${dia}` })
-        .populate('mir4', '-_id -__v');
+    const participantes =
+        await expedicionModel
+            .find({ evento: idEvento, Participacion: `${anio}-${mes}-${dia}` })
+            .populate('mir4', '-_id -__v');
 
-    console.log(participantes)
-
-    //return expedicion.mir4;
+    return participantes;
 }
 
 const crearDesafio = (idEvento, idMir4) => {

@@ -78,7 +78,9 @@ module.exports = {
 
             if (!(dia >= 1 && dia <= 31)) throw new Error("El dia debe estar entre 1 y 31");
 
-            return interaction.reply({ embeds: [getParticipantesEvento(evento, dia, mes, anio)], ephemeral: false });
+            const participantes = getParticipantesEvento(evento, dia, mes, anio).join("\n");
+
+            return interaction.reply({ content: participantes, ephemeral: false });
 
         } catch (error) {
             return interaction.reply({ content: error.message, ephemeral: false });
