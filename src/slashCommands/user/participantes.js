@@ -62,7 +62,6 @@ module.exports = {
     run: async (client, interaction) => {
 
         const userInteraction = interaction.user;
-
         try {
 
             const user = await userModel.findOne({ userID: userInteraction.id });
@@ -78,7 +77,13 @@ module.exports = {
 
             if (!(dia >= 1 && dia <= 31)) throw new Error("El dia debe estar entre 1 y 31");
 
-            const participantes = getParticipantesEvento(evento, dia, mes, anio).join("\n");
+            let participantes = await getParticipantesEvento(evento, dia, mes, anio);
+
+            console.log(participantes);
+
+            participantes = participantes.join(", ");
+
+            console.log(participantes);
 
             return interaction.reply({ content: participantes, ephemeral: false });
 

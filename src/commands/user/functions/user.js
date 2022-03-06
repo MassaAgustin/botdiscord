@@ -63,9 +63,9 @@ const getParticipantesEvento = async (evento, dia, mes, anio) => {
         participantes[i] = participantes[i].mir4.nickName;
     }
 
-    console.log(participantes);
+    //console.log(participantes);
 
-    return participantes;
+    return await participantes;
 }
 
 const getParticipantesDesafio = async (idEvento, dia, mes, anio) => {
