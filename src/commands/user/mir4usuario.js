@@ -11,13 +11,11 @@ module.exports = {
             if (args.length) {
 
                 const nickName = args[0];
-                const mir4Account = getAccountMir4(nickName);
+                const mir4Account = await getAccountMir4(nickName);
 
                 if (!mir4Account) return message.channel.send('Esta cuenta de mir4 no existe');
 
-                delete mir4Account.nickName;
-
-                const messageEmbed = getEmbedMessage(mir4Account.nickName, 'success', '', mir4Account);
+                const messageEmbed = getEmbedMessage('Estadisticas', 'success', '', mir4Account);
 
                 message.channel.send({ embeds: [messageEmbed] });
 
@@ -26,7 +24,7 @@ module.exports = {
             }
 
         } catch (error) {
-            message.channel.send('Error al obtener las estadisticas del usuario');
+            message.channel.send(`Error al obtener las estadisticas del usuario: ${error}`);
         }
     }
 }

@@ -8,6 +8,11 @@ const { MessageEmbed } = require("discord.js");
  * @param {*} description String - Texto que forma parte del cuerpo (letra chica) - "ejemplo descripcion"
  * @returns MessageEmbed - Con la especificacion que se le indico en los parametros
  */
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 const getEmbedMessage = (title, color, description, rows = null) => {
 
     const mensaje = new MessageEmbed();
@@ -34,10 +39,17 @@ const getEmbedMessage = (title, color, description, rows = null) => {
     mensaje.setColor(messageType);
     mensaje.setDescription(description)
 
+
     if (rows) {
+        rows = Object.entries(rows)[2][1];
         Object.entries(rows)
-            .forEach(([key, value]) => {
-                mensaje.addField(key, value);
+            .map(([key, value]) => {
+                console.log(typeof value);
+                if (typeof value == 'object') {
+                    const date = new Date(value);
+                    value = `${date.toLocaleDateString('es-ES')} a las ${date.toLocaleTimeString('es-ES')}` ;
+                }
+                mensaje.addField(`${capitalizeFirstLetter(key)}`, `${value}`);
             });
     }
 

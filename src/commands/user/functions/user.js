@@ -16,7 +16,7 @@ const userExists = async (id) => {
 
 const getAccountMir4 = async (nickName) => {
 
-    return await mir4Model.findOne({ nickName: nickName }, '-_id -__v');
+    return mir4Model.findOne({ nickName: nickName }, '-_id -__v');
 }
 
 const createUser = async (id, username) => {
