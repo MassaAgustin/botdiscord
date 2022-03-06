@@ -40,6 +40,47 @@ const crearParticipacionEvento = async (evento, mir4) => {
     return participacionCreada.save();
 }
 
+const getParticipantesEvento = async (evento, dia, mes, anio) => {
+
+    const existEvent = await eventoModel.findOne({ nombre: evento });
+    if (!existEvent) throw new Error(`No existe el evento ${evento}`);
+
+    let participantes = null;
+
+    switch (evento) {
+        case NAME_EXPEDICION:
+            participantes = await getParticipantesExpedicion(existEvent._id, dia, mes, anio);
+            break;
+        case NAME_DESAFIO:
+            participantes = await getParticipantesDesafio(existEvent._id, dia, mes, anio);
+    }
+
+    console.log(participantes);
+}
+
+const getParticipantesDesafio = async (idEvento, dia, mes, anio) => {
+
+    const participantes = await desafioModel
+        .findOne({ evento: idEvento, Participacion: `${anio}-${mes}-${dia}` })
+        .populate('mir4', '-_id -__v');
+
+
+    console.log(participantes)
+
+    //return desafio.mir4;
+}
+
+const getParticipantesExpedicion = async (idEvento, dia, mes, anio) => {
+
+    const participantes = await expedicionModel
+        .findOne({ evento: idEvento, Participacion: `${anio}-${mes}-${dia}` })
+        .populate('mir4', '-_id -__v');
+
+    console.log(participantes)
+
+    //return expedicion.mir4;
+}
+
 const crearDesafio = (idEvento, idMir4) => {
     return desafioModel.create({ evento: idEvento, mir4: idMir4 });
 }
@@ -158,5 +199,6 @@ module.exports = {
     getAccountMir4,
     getCantidadUsuarios,
     getCantidadUsuariosMir4,
-    crearParticipacionEvento
+    crearParticipacionEvento,
+    getParticipantesEvento
 }
