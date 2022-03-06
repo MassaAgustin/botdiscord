@@ -6,6 +6,7 @@ const eventoSchema = new Schema({
         required: true,
         unique: true
     }
+    //asd
 }, {
     timestamps: {
         createdAt: "Fecha creacion",
