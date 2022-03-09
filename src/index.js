@@ -40,7 +40,7 @@ clientD.login(process.env.DSTOKEN);
 clientD.once("ready", (bot) => {
 
     clientD.user.setStatus("online");
-    clientD.user.setActivity("#Node", { type: "STREAMING" });
+    clientD.user.setActivity("#Mir4", { type: "STREAMING" });
 });
 
 clientD.once("guildMemberAdd", (member) => {

@@ -79,11 +79,7 @@ module.exports = {
 
             let participantes = await getParticipantesEvento(evento, dia, mes, anio);
 
-            console.log(participantes);
-
             participantes = participantes.join(", ");
-
-            console.log(participantes);
 
             return interaction.reply({ content: participantes, ephemeral: false });
 
