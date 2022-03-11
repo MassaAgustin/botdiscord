@@ -1,3 +1,34 @@
+const express = require('express');
+const morgan = require('morgan');
+require('./db');
+const cors = require('cors');
+
+
+//Rutas
+
+const mir4Ruta = require('./rutas/mir4');
+
+const app = express();
+
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(cors());
+app.set('port', process.env.PORT || 3000);
+
+app.use('/mir4', mir4Ruta);
+
+app.use((req, response, next) => {
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Credentials", "true");
+    response.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
+    response.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+    next();
+})
+
+app.listen(app.get('port'));
+
+
+
 require('dotenv').config();
 
 const discord = require('discord.js');
