@@ -89,7 +89,7 @@ module.exports = {
             if (poder) userPropsToUpdate.poder = poder;
             if (nivel) userPropsToUpdate.nivel = nivel;
 
-            let user = await userModel.findOne({ userID: idUserInteraction });
+            let user = await userModel.findOne({ userID: id });
             if (!user) {
                 if (!username) return Error("Debes tener un username");
                 user = await createUser(id, nickName);

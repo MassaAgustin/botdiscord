@@ -38,7 +38,7 @@ module.exports = {
             choices: eventos,
             required: true
         },
-        {
+        /* {
             name: "dia",
             description: "Dia del evento",
             type: "STRING",
@@ -57,7 +57,7 @@ module.exports = {
             type: "STRING",
             choices: anios,
             required: true
-        }
+        } */
     ],
     run: async (client, interaction) => {
 
@@ -71,9 +71,9 @@ module.exports = {
             const optionInteraction = interaction.options;
 
             const evento = optionInteraction.getString("evento");
-            const dia = optionInteraction.getString("dia");
+            /* const dia = optionInteraction.getString("dia");
             const mes = optionInteraction.getString("mes");
-            const anio = optionInteraction.getString("anio");
+            const anio = optionInteraction.getString("anio"); */
 
             if (!(dia >= 1 && dia <= 31)) throw new Error("El dia debe estar entre 1 y 31");
 

@@ -7,7 +7,7 @@ module.exports = async (client, discord, interaction) => {
 
     if (!interactionCommand) return interaction.reply({ content: "Comando no registrado", ephemeral: true });
 
-      try {
+    try {
         interactionCommand.run(client, interaction);
     } catch (err) {
         console.log('Error al ejecutar el comando slash: ', err);

@@ -40,7 +40,7 @@ const crearParticipacionEvento = async (evento, mir4) => {
     return participacionCreada.save();
 }
 
-const getParticipantesEvento = async (evento, dia, mes, anio) => {
+const getParticipantesEvento = async (evento, dia = null, mes = null, anio = null) => {
 
     const existEvent = await eventoModel.findOne({ nombre: evento });
     if (!existEvent) throw new Error(`No existe el evento ${evento}`);
@@ -51,10 +51,10 @@ const getParticipantesEvento = async (evento, dia, mes, anio) => {
 
     switch (evento) {
         case NAME_EXPEDICION:
-            participantes = await getParticipantesExpedicion(existEvent._id, dia, mes, anio);
+            participantes = await getParticipantesExpedicion(existEvent._id);
             break;
         case NAME_DESAFIO:
-            participantes = await getParticipantesDesafio(existEvent._id, dia, mes, anio);
+            participantes = await getParticipantesDesafio(existEvent._id);
     }
 
 
@@ -82,7 +82,7 @@ const getParticipantesExpedicion = async (idEvento, dia, mes, anio) => {
 
     const participantes =
         await expedicionModel
-            .find({ evento: idEvento, Participacion: `${anio}-${mes}-${dia}` })
+            .find({ evento: idEvento })
             .populate('mir4', '-_id -__v');
 
     return participantes;
@@ -107,9 +107,15 @@ const getCantidadUsuariosMir4 = async () => {
     return await mir4Model.find({}).countDocuments();
 }
 
-const getAccountMir4 = async (nickName) => {
+const getAccountMir4 = async (nickName, id = null) => {
 
-    return mir4Model.findOne({ nickName: nickName }, '-_id -__v');
+    const filtroMir4 = {};
+
+    if (id != null) filtroMir4._id = id;
+
+    filtroMir4.nickName = nickName;
+
+    return mir4Model.findOne(filtroMir4, '-_id -__v');
 }
 
 const createUser = async (id, username) => {
