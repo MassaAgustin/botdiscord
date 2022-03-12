@@ -119,9 +119,7 @@ const createUser = async (id, username) => {
         userName: username,
     });
 
-    newUser.save();
-
-    return newUser;
+    return await newUser.save();
 }
 
 const associateLolAccount = async (user_id, nickName) => {
@@ -172,6 +170,7 @@ const associateAxieAccount = async (user_id, nickName) => {
 const associateMir4Account = async (user, nickName) => {
 
     let mir4Account = await mir4Model.findOne({ nickName: nickName });
+    let userUpdated = null;
 
     if (!mir4Account) {
         mir4Account = await mir4Model.create({
@@ -181,7 +180,7 @@ const associateMir4Account = async (user, nickName) => {
 
     if (!user.mir4) {
 
-        const userUpdated =
+        userUpdated =
             await userModel
                 .updateOne(
                     {
@@ -193,7 +192,7 @@ const associateMir4Account = async (user, nickName) => {
                 );
     }
 
-    return mir4Account;
+    return [mir4Account, userUpdated];
 }
 
 module.exports = {

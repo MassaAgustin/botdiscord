@@ -19,7 +19,7 @@ module.exports = (client, discord) => {
                     slash.push(command);
                 }
             } catch (err) {
-                console.log(`Error al cargar el archivo ${fileJs}`);
+                console.log(`Error al cargar el archivo ${fileJs} por ${err}`);
             }
         }
     });

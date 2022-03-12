@@ -1,5 +1,10 @@
 const userModel = require("../../schemas/userSchema");
 const mir4Model = require("../../schemas/mir4Schema");
+const { createUser, associateMir4Account } = require("../../commands/user/functions/user");
+const { Types: { ObjectId } } = require("mongoose");
+
+const MIR4_ARRAY = 0;
+const USER_ARRAY = 1;
 
 const clasesMir4 = [
     { name: "Hechicera", value: "Hechicera" },
@@ -11,9 +16,10 @@ const clasesMir4 = [
 ];
 
 const clanesMir4 = [
-    { name: "LATAM ATR 1", value: "LATAM ATR 1" },
-    { name: "LATAM ATR 2", value: "LATAM ATR 2" },
-    { name: "LATAM ATR 3", value: "LATAM ATR 3" }
+    { name: "LATAM ATR 1", value: "622c9dcc71b70a86da6d64fc" },
+    { name: "LATAM ATR 2", value: "622c9e2671b70a86da6d6500" },
+    { name: "LATAM ATR 3", value: "622c9ea071b70a86da6d6505" },
+    { name: "Ninguno", value: "622ca14171b70a86da6d6509" }
 ]
 
 module.exports = {
@@ -62,13 +68,9 @@ module.exports = {
     ],
     run: async (client, interaction) => {
 
-        const userInteraction = interaction.user;
-
         try {
 
-            const user = await userModel.findOne({ userID: userInteraction.id });
-            if (!user) return interaction.reply({ content: "Aun no eres usuario", ephemeral: true });
-            if (!user.mir4) return interaction.reply({ content: "Aun no tienes cuenta de mir4", ephemeral: true });
+            const { id, username } = interaction.user;
 
             const optionInteraction = interaction.options;
             const userPropsToUpdate = {};
@@ -83,9 +85,19 @@ module.exports = {
             if (nickName) userPropsToUpdate.nickName = nickName;
             if (clase) userPropsToUpdate.clase = clase;
             if (subclase) userPropsToUpdate.subclase = subclase;
-            if (clan) userPropsToUpdate.clan = clan;
+            if (clan) userPropsToUpdate.clan = ObjectId(clan);
             if (poder) userPropsToUpdate.poder = poder;
             if (nivel) userPropsToUpdate.nivel = nivel;
+
+            let user = await userModel.findOne({ userID: idUserInteraction });
+            if (!user) {
+                if (!username) return Error("Debes tener un username");
+                user = await createUser(id, nickName);
+            }
+            if (!user.mir4) {
+                if (!nickName) return Error("Debes ingresar un nickname para create una cuenta de mir4");
+                user = await associateMir4Account(user, nickName)[USER_ARRAY];
+            }
 
             const mir4Updated = await mir4Model.updateOne(
                 { _id: user.mir4 },
