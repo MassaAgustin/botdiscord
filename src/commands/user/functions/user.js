@@ -171,15 +171,18 @@ const associateAxieAccount = async (user_id, nickName) => {
     return axieAccount;
 }
 
-const associateMir4Account = async (user, nickName) => {
+const associateMir4Account = async (user, userPropsToUpdate) => {
 
-    let mir4Account = await mir4Model.findOne({ nickName: nickName });
+    let mir4Account = await mir4Model.findOne({ nickName: userPropsToUpdate.nickName });
     let userUpdated = null;
 
     if (!mir4Account) {
-        mir4Account = await mir4Model.create({
-            nickName: nickName
-        });
+        mir4Account = await mir4Model.create(userPropsToUpdate);
+    } else {
+        mir4Account = await mir4Model.updateOne(
+            { _id: user.mir4 },
+            { $set: userPropsToUpdate }
+        );
     }
 
     if (!user.mir4) {

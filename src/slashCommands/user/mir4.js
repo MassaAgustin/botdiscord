@@ -89,25 +89,29 @@ module.exports = {
             if (nivel) userPropsToUpdate.nivel = nivel;
 
             let user = await userModel.findOne({ userID: id });
+            let content = 'Nada para actualizar';
             if (!user) {
                 if (!username) throw Error("Debes tener un username");
                 user = await createUser(id, username);
-                interaction.reply({ content: "Usuario creado", ephemeral: true });
+                content = "Usuario creado";
             }
             if (!user.mir4) {
-                if (!nickName) throw Error("Debes ingresar un nickname para create una cuenta de mir4");
-                user = await associateMir4Account(user, nickName)[USER_ARRAY];
-                interaction.reply({ content: "Cuenta de mir4 asociada", ephemeral: true });
+                if (!nickName) throw Error("Usuario creado, si especificas nickname se creara una cuenta de mir4");
+                user = await associateMir4Account(user, userPropsToUpdate)[USER_ARRAY];
+                content = "Cuenta de mir4 asociada";
             } else {
-                const mir4Updated = await mir4Model.updateOne(
-                    { _id: user.mir4 },
-                    { $set: userPropsToUpdate }
-                );
 
-                let content = 'Actualizado correctamente';
+                if (Object.keys(userPropsToUpdate).length) {
+                    const mir4Updated = await mir4Model.updateOne(
+                        { _id: user.mir4 },
+                        { $set: userPropsToUpdate }
+                    );
 
-                if (!mir4Updated) {
-                    content = 'No se pudo actualizar el usuario' + mir4Updated;
+                    content = 'Actualizado correctamente';
+
+                    if (!mir4Updated) {
+                        content = 'No se pudo actualizar el usuario' + mir4Updated;
+                    }
                 }
             }
             interaction.reply({ content: content, ephemeral: true });
