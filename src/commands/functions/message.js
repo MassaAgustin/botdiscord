@@ -43,10 +43,14 @@ const getEmbedMessage = (title, color, description = null, rows = null) => {
     if (rows) {
         rows = Object.entries(rows)[2][1];
         Object.entries(rows)
-            .map(([key, value]) => {
-                if (typeof value == 'object') {
+            .forEach(([key, value]) => {
+                if (typeof value == 'object' && key != 'clan') {
                     const date = new Date(value);
                     value = `${date.toLocaleDateString('es-ES')} a las ${date.toLocaleTimeString('es-ES')}`;
+                } else {
+                    if (key == 'clan') {
+                        value = value.nombre;
+                    }
                 }
                 mensaje.addField(`${capitalizeFirstLetter(key)}`, `${value}`);
             });

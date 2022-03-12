@@ -38,7 +38,7 @@ module.exports = {
 
         } catch (error) {
             console.log(error);
-            return interaction.reply({ content: error.message, ephemeral: false });
+            interaction.reply({ content: error.message, ephemeral: false });
         }
     }
 }

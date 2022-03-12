@@ -90,29 +90,30 @@ module.exports = {
 
             let user = await userModel.findOne({ userID: id });
             if (!user) {
-                if (!username) return Error("Debes tener un username");
-                user = await createUser(id, nickName);
+                if (!username) throw Error("Debes tener un username");
+                user = await createUser(id, username);
+                interaction.reply({ content: "Usuario creado", ephemeral: true });
             }
             if (!user.mir4) {
-                if (!nickName) return Error("Debes ingresar un nickname para create una cuenta de mir4");
+                if (!nickName) throw Error("Debes ingresar un nickname para create una cuenta de mir4");
                 user = await associateMir4Account(user, nickName)[USER_ARRAY];
+                interaction.reply({ content: "Cuenta de mir4 asociada", ephemeral: true });
+            } else {
+                const mir4Updated = await mir4Model.updateOne(
+                    { _id: user.mir4 },
+                    { $set: userPropsToUpdate }
+                );
+
+                let content = 'Actualizado correctamente';
+
+                if (!mir4Updated) {
+                    content = 'No se pudo actualizar el usuario' + mir4Updated;
+                }
             }
-
-            const mir4Updated = await mir4Model.updateOne(
-                { _id: user.mir4 },
-                { $set: userPropsToUpdate }
-            );
-
-            let content = 'Actualizado correctamente';
-
-            if (!mir4Updated) {
-                content = 'No se pudo actualizar el usuario' + mir4Updated;
-            }
-
-            return interaction.reply({ content: content, ephemeral: true });
+            interaction.reply({ content: content, ephemeral: true });
 
         } catch (error) {
-            return interaction.reply({ content: error.message, ephemeral: true });
+            interaction.reply({ content: error.message, ephemeral: true });
         }
     }
 }
