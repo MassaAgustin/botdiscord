@@ -7,15 +7,17 @@ const cors = require('cors');
 //Rutas
 
 const mir4Ruta = require('./rutas/mir4');
+const clanRuta = require('./rutas/clan');
 
 const app = express();
 
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors());
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3001);
 
 app.use('/mir4', mir4Ruta);
+app.use('/clan', clanRuta);
 
 app.use((req, response, next) => {
     response.setHeader("Access-Control-Allow-Origin", "*");

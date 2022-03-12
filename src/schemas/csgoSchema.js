@@ -10,4 +10,4 @@ const csgoSchema = new Schema({
     timestamps: true
 });
 
-module.exports = model("csgo", csgoSchema);
+//module.exports = model("csgo", csgoSchema);

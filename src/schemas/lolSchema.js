@@ -10,4 +10,4 @@ const lolSchema = new Schema({
     timestamps: true
 });
 
-module.exports = model("lol", lolSchema);
+//module.exports = model("lol", lolSchema);

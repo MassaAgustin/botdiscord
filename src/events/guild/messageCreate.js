@@ -1,8 +1,15 @@
 require('dotenv').config();
 
 const prefix = process.env.PREFIX;
+const ID_TEST = "947192633728598047";
 
 module.exports = async (client, discord, message) => {
+
+    console.log(process.env)
+
+    if (ID_TEST == message.channel.guild.id)
+        if (process.env.npm_lifecycle_event != "dev")
+            return;
 
     //No seguimos si el mensaje es del bot
     if (message.author.bot) return;

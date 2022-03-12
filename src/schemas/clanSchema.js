@@ -5,6 +5,11 @@ const clanSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+    },
+    alianzas: {
+        type: [ this ],
+        default: [],
+        required: false
     }
 }, {
     timestamps: {

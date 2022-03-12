@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, Types: { ObjectId }, model } = require("mongoose");
 
 const mir4Schema = new Schema({
     nickName: {
@@ -17,9 +17,10 @@ const mir4Schema = new Schema({
         default: 1
     },
     clan: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "clan",
         required: false,
-        default: "Ninguno"
+        default: ObjectId("622ca14171b70a86da6d6509")
     },
     clase: {
         type: String,

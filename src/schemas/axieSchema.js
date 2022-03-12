@@ -10,4 +10,4 @@ const axieSchema = new Schema({
     timestamps: true
 });
 
-module.exports = model("axie", axieSchema);
+//module.exports = model("axie", axieSchema);
