@@ -20,7 +20,7 @@ const mir4Schema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "clan",
         required: false,
-        default: ObjectId("622ca14171b70a86da6d6509")
+        default: new ObjectId("622ca14171b70a86da6d6509")
     },
     clase: {
         type: String,

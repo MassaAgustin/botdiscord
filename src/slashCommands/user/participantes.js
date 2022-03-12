@@ -77,7 +77,7 @@ module.exports = {
 
             if (!(dia >= 1 && dia <= 31)) throw new Error("El dia debe estar entre 1 y 31");
 
-            let participantes = await getParticipantesEvento(evento, dia, mes, anio);
+            let participantes = await getParticipantesEvento(evento);
 
             participantes = participantes.join(", ");
 

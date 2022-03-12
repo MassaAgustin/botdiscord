@@ -85,7 +85,7 @@ module.exports = {
             if (nickName) userPropsToUpdate.nickName = nickName;
             if (clase) userPropsToUpdate.clase = clase;
             if (subclase) userPropsToUpdate.subclase = subclase;
-            if (clan) userPropsToUpdate.clan = ObjectId(clan);
+            if (clan) userPropsToUpdate.clan = clan;
             if (poder) userPropsToUpdate.poder = poder;
             if (nivel) userPropsToUpdate.nivel = nivel;
 

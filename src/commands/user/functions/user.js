@@ -111,11 +111,9 @@ const getAccountMir4 = async (nickName, id = null) => {
 
     const filtroMir4 = {};
 
-    if (id != null) filtroMir4._id = id;
+    (id != null) ? filtroMir4._id = id : filtroMir4.nickName = nickName;
 
-    filtroMir4.nickName = nickName;
-
-    return mir4Model.findOne(filtroMir4, '-_id -__v');
+    return mir4Model.findOne(filtroMir4, '-_id -__v').populate('clan', '-_id -__v');
 }
 
 const createUser = async (id, username) => {
