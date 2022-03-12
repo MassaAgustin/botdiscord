@@ -1,4 +1,5 @@
 const { userExists, getAccountMir4 } = require("../../commands/user/functions/user");
+const {  getEmbedMessage } = require("../../commands/functions/message");
 
 
 module.exports = {
@@ -33,8 +34,7 @@ module.exports = {
 
             const messageEmbed = getEmbedMessage('Estadisticas', 'success', '', mir4Account);
 
-            message.channel.send({ embeds: [messageEmbed] });
-
+            interaction.reply({ embeds: [messageEmbed], ephemeral: false });
 
         } catch (error) {
             console.log(error);

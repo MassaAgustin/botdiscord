@@ -1,7 +1,6 @@
 const userModel = require("../../schemas/userSchema");
 const mir4Model = require("../../schemas/mir4Schema");
 const { createUser, associateMir4Account } = require("../../commands/user/functions/user");
-const { Types: { ObjectId } } = require("mongoose");
 
 const MIR4_ARRAY = 0;
 const USER_ARRAY = 1;
