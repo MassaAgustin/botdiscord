@@ -44,7 +44,6 @@ const getEmbedMessage = (title, color, description = null, rows = null) => {
         rows = Object.entries(rows)[2][1];
         Object.entries(rows)
             .map(([key, value]) => {
-                console.log(typeof value);
                 if (typeof value == 'object') {
                     const date = new Date(value);
                     value = `${date.toLocaleDateString('es-ES')} a las ${date.toLocaleTimeString('es-ES')}`;
