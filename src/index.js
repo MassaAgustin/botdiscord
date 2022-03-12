@@ -27,9 +27,9 @@ app.use((req, response, next) => {
     next();
 })
 
-app.listen(app.get('port'));
-
-
+app.listen(app.get('port'), () => {
+    console.log('Server on port', app.get('port'));
+});
 
 require('dotenv').config();
 
