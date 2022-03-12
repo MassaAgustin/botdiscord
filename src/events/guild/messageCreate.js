@@ -5,11 +5,14 @@ const ID_TEST = "947192633728598047";
 
 module.exports = async (client, discord, message) => {
 
-    console.log(process.env)
+    console.log(process.env.npm_lifecycle_event)
 
-    if (ID_TEST == message.channel.guild.id)
-        if (process.env.npm_lifecycle_event != "dev")
-            return;
+    if (process.env.npm_lifecycle_event != "dev") {
+        if (ID_TEST == message.channel.guild.id) return;
+
+    } else if (ID_TEST != message.channel.guild.id) return;
+
+
 
     //No seguimos si el mensaje es del bot
     if (message.author.bot) return;
