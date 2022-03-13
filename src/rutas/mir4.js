@@ -5,4 +5,6 @@ const router = Router();
 
 router.get('/' , mir4Controlador.getListadoJugadores);
 
+router.get('/:id', mir4Controlador.getJugadorByID);
+
 module.exports = router;
