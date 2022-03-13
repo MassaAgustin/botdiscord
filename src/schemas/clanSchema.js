@@ -7,7 +7,8 @@ const clanSchema = new Schema({
         unique: true,
     },
     alianzas: {
-        type: [ this ],
+        type: [ Schema.Types.ObjectId ],
+        ref: "clan",
         default: [],
         required: false
     }
