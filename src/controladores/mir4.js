@@ -12,7 +12,7 @@ const getListadoJugadores = async (req, res) => {
 const getJugadorByID = async (req, res) => {
     const { id } = req.params;
 
-    const jugador = await mir4Model.findById(id).populate('clan', '-_id -__v');
+    const jugador = await mir4Model.findById(id).populate('clan', '-_id -__v').populate('alianzas', '-_id -__v');
 
     res.status(200).json(jugador);
 }
