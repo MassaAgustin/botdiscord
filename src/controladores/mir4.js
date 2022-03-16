@@ -19,6 +19,10 @@ const getListadoJugadores = async (req, res) => {
             page,
             limit,
             sort: { sortKey: orderValue },
+            populate: {
+                path: 'clan',
+                select: '-_id -__v'
+            },
             collation: {
                 locale: 'es'
             }
