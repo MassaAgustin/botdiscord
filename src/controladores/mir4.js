@@ -3,10 +3,39 @@ const mir4Model = require('../schemas/mir4Schema');
 
 const getListadoJugadores = async (req, res) => {
     const { } = req.body;
+    const { page, limit, sort, order } = req.query;
+    let jugadores;
 
-    const listadoJugadores = await mir4Model.find({}).populate('clan', '-_id -__v');
+    if (page && limit) {
 
-    res.status(200).json(listadoJugadores);
+        let sortKey = '_id', orderValue = '-1'; //If not pass any sort order, query result is inconsistence in the order(repeats elements)
+
+        if (sort && order) {
+            sortKey = sort
+            orderValue = order
+        }
+
+        const options = {
+            page,
+            limit,
+            sort: { sortKey: orderValue },
+            collation: {
+                locale: 'es'
+            }
+        };
+
+        jugadores = await mir4Model.paginate({}, options);
+
+    } else {
+        jugadores = await mir4Model.find({}).populate('clan', '-_id -__v');
+    }
+
+
+    res.status(200).json({
+        success: true,
+        message: `Jugadores de la página ${page}`,
+        ...jugadores
+    });
 }
 
 const getJugadorByID = async (req, res) => {

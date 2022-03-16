@@ -1,5 +1,7 @@
 const { Schema, Types: { ObjectId }, model } = require("mongoose");
 
+const mongoosePaginate = require("mongoose-paginate-v2");
+
 const mir4Schema = new Schema({
     nickName: {
         type: String,
@@ -36,7 +38,10 @@ const mir4Schema = new Schema({
     timestamps: {
         createdAt: "Fecha cracion",
         updatedAt: "Fecha actualizacion"
-    }
+    },
+    versionKey: false
 });
+
+mir4Schema.plugin(mongoosePaginate)
 
 module.exports = model("mir4", mir4Schema);
