@@ -3,16 +3,27 @@ const mir4Model = require('../schemas/mir4Schema');
 
 const getListadoJugadores = async (req, res) => {
     const { } = req.body;
-    const { page, limit, sort, order } = req.query;
+    const { page, limit, sortk, order } = req.query;
+    const responseLabels = {
+        totalDocs: 'totalData',
+        docs: 'jugadores',
+        limit: 'perPage',
+        page: 'currentPage',
+        nextPage: 'next',
+        prevPage: 'prev'
+        //totalPages: 'pageCount',
+        //pagingCounter: 'slNo',
+        //meta: 'paginador',
+    };
     let jugadores;
 
     if (page && limit) {
 
-        let sortKey = '_id', orderValue = '-1'; //If not pass any sort order, query result is inconsistence in the order(repeats elements)
+        let sortKey = '_id', orderValue = '-1';
 
-        if (sort && order) {
-            sortKey = sort
-            orderValue = order
+        if (sortk && order) {
+            sortKey = sortk;
+            orderValue = order;
         }
 
         const options = {
@@ -25,13 +36,14 @@ const getListadoJugadores = async (req, res) => {
             },
             collation: {
                 locale: 'es'
-            }
+            },
+            customLabels: responseLabels
         };
 
         jugadores = await mir4Model.paginate({}, options);
 
     } else {
-        jugadores = await mir4Model.find({}).populate('clan', '-_id -__v');
+        jugadores = { jugadores: await mir4Model.find({}).populate('clan', '-_id -__v') };
     }
 
 
