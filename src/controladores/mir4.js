@@ -2,8 +2,7 @@ const mir4Model = require('../schemas/mir4Schema');
 
 
 const getListadoJugadores = async (req, res) => {
-    const { } = req.body;
-    const { page, limit, sortk, order } = req.query;
+    const { page, limit, sortk, order, clan, nickName, nivel, poder } = req.query;
     const responseLabels = {
         totalDocs: 'totalData',
         docs: 'jugadores',
@@ -15,7 +14,25 @@ const getListadoJugadores = async (req, res) => {
         //pagingCounter: 'slNo',
         //meta: 'paginador',
     };
+    const queryFilter = {
+    };
     let jugadores;
+
+    if (clan) {
+        queryFilter.clan = clan;
+    }
+
+    if (nickName) {
+        queryFilter.nickName = { $regex: `(?i)(${nickName})`};
+    }
+
+    if (nivel) {
+        queryFilter.nivel = { $lte: nivel };
+    }
+
+    if (poder) {
+        queryFilter.poder = { $lte: poder };
+    }
 
     if (page && limit) {
 
@@ -40,10 +57,10 @@ const getListadoJugadores = async (req, res) => {
             customLabels: responseLabels
         };
 
-        jugadores = await mir4Model.paginate({}, options);
+        jugadores = await mir4Model.paginate(queryFilter, options);
 
     } else {
-        jugadores = { jugadores: await mir4Model.find({}).populate('clan', '-_id -__v') };
+        jugadores = { jugadores: await mir4Model.find(queryFilter).populate('clan', '-_id -__v') };
     }
 
 
