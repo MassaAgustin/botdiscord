@@ -1,8 +1,18 @@
 const mir4Model = require('../schemas/mir4Schema');
 
+const getClases = () => {
+    return [
+        'Guerrero',
+        'Maga',
+        'Ballestera',
+        'Lancero',
+        'Taoista',
+        'Ninguno'
+    ];
+}
 
 const getListadoJugadores = async (req, res) => {
-    const { page, limit, sortk, order, clan, nickName, nivel, poder } = req.query;
+    const { page, limit, sortk, order, clan, nickName, nivel, poder, clase } = req.query;
     const responseLabels = {
         totalDocs: 'totalData',
         docs: 'jugadores',
@@ -22,8 +32,12 @@ const getListadoJugadores = async (req, res) => {
         queryFilter.clan = clan;
     }
 
+    if (clase) {
+        queryFilter.clase = clase;
+    }
+
     if (nickName) {
-        queryFilter.nickName = { $regex: `(?i)(${nickName})`};
+        queryFilter.nickName = { $regex: `(?i)(${nickName})` };
     }
 
     if (nivel) {
@@ -91,5 +105,6 @@ const getJugadorByID = async (req, res) => {
 
 module.exports = {
     getJugadorByID,
-    getListadoJugadores
+    getListadoJugadores,
+    getClases
 }
