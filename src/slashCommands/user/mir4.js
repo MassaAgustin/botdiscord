@@ -97,7 +97,7 @@ module.exports = {
             const userPropsToUpdate = {};
 
             const optionInteraction = interaction.options;
-            const idUsuarioParaRegistrar = optionInteraction.get('idusuario');
+            const idUsuarioParaRegistrar = optionInteraction.getString('idusuario');
             const nickName = optionInteraction.getString("nickname");
             const clase = optionInteraction.getString("clase");
             const subclase = optionInteraction.getString("subclase");
