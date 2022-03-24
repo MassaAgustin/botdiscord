@@ -2,6 +2,23 @@ const userModel = require("../../schemas/userSchema");
 const mir4Model = require("../../schemas/mir4Schema");
 const { createUser, associateMir4Account } = require("../../commands/user/functions/user");
 
+const COLORADA = "270678637638844416";
+const CHIRRIPAY = "701092573800038440";
+const ARANDI = "260841992274051084";
+const CHACO = "271829581407715328";
+const LEONA = "901536521016987648";
+const INMORTAL = "423889249415462912";
+
+
+const admins = [
+    COLORADA,
+    CHIRRIPAY,
+    ARANDI,
+    CHACO,
+    LEONA,
+    INMORTAL
+];
+
 const MIR4_ARRAY = 0;
 const USER_ARRAY = 1;
 
@@ -63,17 +80,24 @@ module.exports = {
             type: "STRING",
             required: false,
             choices: clanesMir4
+        },
+        {
+            name: "idusuario",
+            description: "NO USAR",
+            type: "STRING",
+            required: false
         }
     ],
     run: async (client, interaction) => {
 
         try {
 
-            const { id, username } = interaction.user;
-
-            const optionInteraction = interaction.options;
+            const { username, ...rest } = interaction.user;
+            let { id } = rest;
             const userPropsToUpdate = {};
 
+            const optionInteraction = interaction.options;
+            const idUsuarioParaRegistrar = interaction.get('idusuario');
             const nickName = optionInteraction.getString("nickname");
             const clase = optionInteraction.getString("clase");
             const subclase = optionInteraction.getString("subclase");
@@ -87,6 +111,10 @@ module.exports = {
             if (clan) userPropsToUpdate.clan = clan;
             if (poder) userPropsToUpdate.poder = poder;
             if (nivel) userPropsToUpdate.nivel = nivel;
+
+            if (idUsuarioParaRegistrar && admins.includes(id))
+                id = idUsuarioParaRegistrar;
+            else throw new Error("No tienes permisos para registrar a otro usuario");
 
             let user = await userModel.findOne({ userID: id });
             let content = 'Nada para actualizar';
