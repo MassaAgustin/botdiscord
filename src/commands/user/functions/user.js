@@ -47,8 +47,6 @@ const getParticipantesEvento = async (evento, dia = null, mes = null, anio = nul
 
     let participantes = null;
 
-    console.log({ evento, dia, mes, anio })
-
     switch (evento) {
         case NAME_EXPEDICION:
             participantes = await getParticipantesExpedicion(existEvent._id);
