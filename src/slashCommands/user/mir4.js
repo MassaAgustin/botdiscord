@@ -92,8 +92,7 @@ module.exports = {
 
         try {
 
-            const { username, ...rest } = interaction.user;
-            let { id } = rest;
+            let { id, username } = interaction.user;
             const userPropsToUpdate = {};
 
             const optionInteraction = interaction.options;
@@ -112,14 +111,18 @@ module.exports = {
             if (poder) userPropsToUpdate.poder = poder;
             if (nivel) userPropsToUpdate.nivel = nivel;
 
-            if (idUsuarioParaRegistrar && admins.includes(id))
+            if (idUsuarioParaRegistrar) {
+                if (!admins.includes(id)) throw new Error("No tienes permisos para registrar a otro usuario");
+
                 id = idUsuarioParaRegistrar;
-            else throw new Error("No tienes permisos para registrar a otro usuario");
+                username = nickName;
+            }
 
             let user = await userModel.findOne({ userID: id });
             let content = 'Nada para actualizar';
-            if (!user) {
+            if (!user && idUsuarioParaRegistrar) {
                 if (!username) throw Error("Debes tener un username");
+                console.log(id, username);
                 user = await createUser(id, username);
                 content = "Usuario creado";
             }
