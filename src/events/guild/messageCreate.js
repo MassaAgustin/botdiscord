@@ -3,12 +3,30 @@ require('dotenv').config();
 const prefix = process.env.PREFIX;
 const ID_TEST = "947192633728598047";
 
+const COMANDOS_LATAM_ATR = "949790656648339598";
+const COMANDOS_TEST = "949711507032272916";
+const canalesPermitidos = [COMANDOS_LATAM_ATR, COMANDOS_TEST];
+
+
+const IDIOMA_EN = "EN";
+const IDIOMA_PT = "PT";
+const IDIOMAS_PERMITIDOS = [IDIOMA_EN, IDIOMA_PT];
+
 module.exports = async (client, discord, message) => {
 
-    if (process.env.npm_lifecycle_event != "dev") {
-        if (ID_TEST == message.channel.guild.id) return;
+    const ambienteProduccion = process.env.npm_lifecycle_event != "dev";
 
-    } else if (ID_TEST != message.channel.guild.id) return;
+    const canalDiscordDesarrollo = ID_TEST == message.channel.guild.id;
+    const canalActual = message.channel.id;
+    const canalComandos = canalesPermitidos.includes(canalActual);
+
+    if (ambienteProduccion) {
+        if (canalDiscordDesarrollo && canalComandos) return;
+    }
+    else if (!canalDiscordDesarrollo && canalComandos) return;
+
+    //console.log(await message.author.send('Probando')); Para enviar mensajes privados al usuario (con el bot)
+    //console.log(discord.guilds)
 
     //No seguimos si el mensaje es del bot
     if (message.author.bot) return;

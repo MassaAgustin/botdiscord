@@ -1,6 +1,19 @@
 const userModel = require("../../schemas/userSchema");
 const { crearParticipacionEvento } = require("../../commands/user/functions/user");
 
+const horarios = [
+    {
+        idClan: "",
+        horario: ""
+    },
+    {
+
+    },
+    {
+
+    }
+];
+
 const eventos = [
     { name: "Expedicion", value: "Expedicion" },
     { name: "Desafio", value: "Desafio" }

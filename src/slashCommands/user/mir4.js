@@ -122,7 +122,6 @@ module.exports = {
             let content = 'Nada para actualizar';
             if (!user && idUsuarioParaRegistrar) {
                 if (!username) throw Error("Debes tener un username");
-                console.log(id, username);
                 user = await createUser(id, username);
                 content = "Usuario creado";
             }

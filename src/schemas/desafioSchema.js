@@ -1,6 +1,9 @@
 const { Schema, model } = require("mongoose");
 
 const desafioSchema = new Schema({
+    nombre: {
+        type: String,
+    },
     evento: {
         type: Schema.Types.ObjectId,
         ref: "evento",

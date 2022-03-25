@@ -6,8 +6,14 @@ const clanSchema = new Schema({
         required: true,
         unique: true,
     },
+    eventos: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "evento",
+        }
+    ],
     alianzas: {
-        type: [ Schema.Types.ObjectId ],
+        type: [Schema.Types.ObjectId],
         ref: "clan",
         default: [],
         required: false

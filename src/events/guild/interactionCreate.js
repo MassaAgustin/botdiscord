@@ -1,13 +1,23 @@
 const ID_TEST = "947192633728598047";
 
+const COMANDOS_LATAM_ATR = "949790656648339598";
+const COMANDOS_TEST = "949711507032272916";
+const canalesPermitidos = [COMANDOS_LATAM_ATR, COMANDOS_TEST];
+
 module.exports = async (client, discord, interaction) => {
 
     if (!interaction.isCommand()) return;
 
-    if (process.env.npm_lifecycle_event != "dev") {
-        if (ID_TEST == interaction.channel.guild.id) return;
+    const ambienteProduccion = process.env.npm_lifecycle_event != "dev";
 
-    } else if (ID_TEST != interaction.channel.guild.id) return;
+    const canalDiscordDesarrollo = ID_TEST == message.channel.guild.id;
+    const canalActual = message.channel.id;
+    const canalComandos = canalesPermitidos.includes(canalActual);
+
+    if (ambienteProduccion) {
+        if (canalDiscordDesarrollo && canalComandos) return;
+    }
+    else if (!canalDiscordDesarrollo && canalComandos) return;
 
     const interactionCommand = client.slash.get(interaction.commandName);
 

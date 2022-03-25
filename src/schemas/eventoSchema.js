@@ -1,8 +1,8 @@
 const { Schema, model } = require("mongoose");
 
 const eventoSchema = new Schema({
-    nombre: {
-        type: String,
+    tipo: {
+        type: Schema.Types.ObjectId,
         required: true,
         unique: true
     }
