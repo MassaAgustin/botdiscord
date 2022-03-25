@@ -14,10 +14,14 @@ module.exports = async (client, discord, interaction) => {
     const canalActual = interaction.channel.id;
     const canalComandos = canalesPermitidos.includes(canalActual);
 
+    if (!canalComandos) return interaction.reply("Los comandos solo pueden usarse en el canal de comandos");
+
     if (ambienteProduccion) {
-        if (canalDiscordDesarrollo && canalComandos) return interaction.reply("Los comandos solo pueden usarse en el canal de comandos");
+        if (canalDiscordDesarrollo) return interaction.reply("Instancia produccion");
     }
-    else if (!canalDiscordDesarrollo && canalComandos) return interaction.reply("Los comandos solo pueden usarse en el canal de comandos");
+    else {
+        if (!canalDiscordDesarrollo) return interaction.reply("Instacia testeo (Arandi: 'se vienen cositas uwu')");
+    }
 
     const interactionCommand = client.slash.get(interaction.commandName);
 
