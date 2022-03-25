@@ -38,18 +38,18 @@ module.exports = async (client, discord, message) => {
     const memberHablaEN = message.member.roles.cache.some(r => r.name == IDIOMA_EN);
     const memberHablaPT = message.member.roles.cache.some(r => r.name == IDIOMA_PT);
 
-    console.log(message.mentions);
+    console.log(message.mentions.users);
 
-    if (memberHablaEN && message.mentions.repliedUser == null) {
+    if (memberHablaEN && message.mentions.users == null) {
         const traduccion = await traducir(message.content, IDIOMA_EN);
-        message.reply({ content: `:flag_um: -> :flag_ar: ${traduccion}`, ephemeral: true });
         message.react('👀');
+        await message.reply({ content: `:flag_um: -> :flag_ar: ${traduccion}`, ephemeral: true });
     }
 
-    if (memberHablaPT && message.mentions.repliedUser == null) {
+    if (memberHablaPT && message.mentions.users == null) {
         const traduccion = await traducir(message.content, IDIOMA_PT);
-        message.reply({ content: `:flag_br: -> :flag_ar: ${traduccion}`, ephemeral: true });
         message.react('👀');
+        await message.reply({ content: `:flag_br: -> :flag_ar: ${traduccion}`, ephemeral: true });
     }
 
     //No seguimos si el mensaje no está en el canal de comandos
