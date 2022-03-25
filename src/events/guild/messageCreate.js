@@ -36,13 +36,14 @@ module.exports = async (client, discord, message) => {
 
     if (memberHablaEN) {
         const traduccion = await traducir(message.content, IDIOMA_EN);
-        await message.reply({ content: `:flag_um: -> :flag_ar: ${traduccion}`, ephemeral: true });
+        return await message.reply({ content: `:flag_um: -> :flag_ar: ${traduccion}`, ephemeral: true });
     }
 
     if (memberHablaPT) {
         const traduccion = await traducir(message.content, IDIOMA_PT);
-        await message.reply({ content: `:flag_br: -> :flag_ar: ${traduccion}`, ephemeral: true });
+        return await message.reply({ content: `:flag_br: -> :flag_ar: ${traduccion}`, ephemeral: true });
     }
+
 
     //No seguimos si el mensaje es del bot
     if (message.author.bot) return;
