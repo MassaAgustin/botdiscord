@@ -31,22 +31,24 @@ module.exports = async (client, discord, message) => {
     } */
 
     //console.log(await message.author.send('Probando')); Para enviar mensajes privados al usuario (con el bot)
-    const memberHablaEN = message.member.roles.cache.some(r => r.name == IDIOMA_EN);
-    const memberHablaPT = message.member.roles.cache.some(r => r.name == IDIOMA_PT);
-
-    if (memberHablaEN && (!message.mentions.users || message.mentions.users[message.author.id])) {
-        const traduccion = await traducir(message.content, IDIOMA_EN);
-        return await message.reply({ content: `:flag_um: -> :flag_ar: ${traduccion}`, ephemeral: true });
-    }
-
-    if (memberHablaPT && (!message.mentions.users || message.mentions.users[message.author.id])) {
-        const traduccion = await traducir(message.content, IDIOMA_PT);
-        return await message.reply({ content: `:flag_br: -> :flag_ar: ${traduccion}`, ephemeral: true });
-    }
-
 
     //No seguimos si el mensaje es del bot
     if (message.author.bot) return;
+
+    const memberHablaEN = message.member.roles.cache.some(r => r.name == IDIOMA_EN);
+    const memberHablaPT = message.member.roles.cache.some(r => r.name == IDIOMA_PT);
+
+    if (memberHablaEN) {
+        const traduccion = await traducir(message.content, IDIOMA_EN);
+        message.reply({ content: `:flag_um: -> :flag_ar: ${traduccion}`, ephemeral: true });
+        message.react('👀');
+    }
+
+    if (memberHablaPT) {
+        const traduccion = await traducir(message.content, IDIOMA_PT);
+        message.reply({ content: `:flag_br: -> :flag_ar: ${traduccion}`, ephemeral: true });
+        message.react('👀');
+    }
 
     //No seguimos si el mensaje no está en el canal de comandos
     if (message.channel.name != "comandos") return;
