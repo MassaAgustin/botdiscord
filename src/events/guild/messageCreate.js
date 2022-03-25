@@ -14,20 +14,20 @@ const IDIOMAS_PERMITIDOS = [IDIOMA_EN, IDIOMA_PT];
 
 module.exports = async (client, discord, message) => {
 
-    const ambienteProduccion = process.env.npm_lifecycle_event != "dev";
+    /* const ambienteProduccion = process.env.npm_lifecycle_event != "dev";
 
     const canalDiscordDesarrollo = ID_TEST == message.channel.guild.id;
     const canalActual = message.channel.id;
-    const canalComandos = canalesPermitidos.includes(canalActual);
+    const canalComandos = canalesPermitidos.includes(canalActual); */
 
-    if (!canalComandos) return message.channel.send("Los comandos solo pueden usarse en el canal de comandos");
 
-    if (ambienteProduccion) {
+    /* if (ambienteProduccion) {
         if (canalDiscordDesarrollo) return message.channel.send("Instancia produccion");
+        if (!canalComandos) return message.channel.send("Los comandos solo pueden usarse en el canal de comandos");
     }
     else {
         if (!canalDiscordDesarrollo) return message.channel.send("Instacia testeo (Arandi: 'se vienen cositas uwu')");
-    }
+    } */
 
     //console.log(await message.author.send('Probando')); Para enviar mensajes privados al usuario (con el bot)
     //console.log(discord.guilds)
