@@ -38,13 +38,15 @@ module.exports = async (client, discord, message) => {
     const memberHablaEN = message.member.roles.cache.some(r => r.name == IDIOMA_EN);
     const memberHablaPT = message.member.roles.cache.some(r => r.name == IDIOMA_PT);
 
-    if (memberHablaEN) {
+    console.log(message.mentions);
+
+    if (memberHablaEN && message.mentions.repliedUser == null) {
         const traduccion = await traducir(message.content, IDIOMA_EN);
         message.reply({ content: `:flag_um: -> :flag_ar: ${traduccion}`, ephemeral: true });
         message.react('👀');
     }
 
-    if (memberHablaPT) {
+    if (memberHablaPT && message.mentions.repliedUser == null) {
         const traduccion = await traducir(message.content, IDIOMA_PT);
         message.reply({ content: `:flag_br: -> :flag_ar: ${traduccion}`, ephemeral: true });
         message.react('👀');
