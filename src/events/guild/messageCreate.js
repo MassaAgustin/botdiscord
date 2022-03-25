@@ -40,13 +40,13 @@ module.exports = async (client, discord, message) => {
 
     console.log(message.mentions.users);
 
-    if (memberHablaEN && message.mentions.users == null) {
+    if (memberHablaEN && message.mentions.users == {}) {
         const traduccion = await traducir(message.content, IDIOMA_EN);
         message.react('👀');
         await message.reply({ content: `:flag_um: -> :flag_ar: ${traduccion}`, ephemeral: true });
     }
 
-    if (memberHablaPT && message.mentions.users == null) {
+    if (memberHablaPT && message.mentions.users == {}) {
         const traduccion = await traducir(message.content, IDIOMA_PT);
         message.react('👀');
         await message.reply({ content: `:flag_br: -> :flag_ar: ${traduccion}`, ephemeral: true });
