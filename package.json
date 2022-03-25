@@ -32,7 +32,7 @@
     "mongoose": "^6.0.12",
     "mongoose-paginate-v2": "^1.6.3",
     "morgan": "^1.10.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "play-dl": "^1.2.6",
     "yt-search": "^2.10.2",
     "ytdl-core": "^4.9.1"

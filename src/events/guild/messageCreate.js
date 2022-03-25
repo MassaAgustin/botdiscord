@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { traducir } = require('../../commands/functions/message');
 
 const prefix = process.env.PREFIX;
 const ID_TEST = "947192633728598047";
@@ -30,7 +31,18 @@ module.exports = async (client, discord, message) => {
     } */
 
     //console.log(await message.author.send('Probando')); Para enviar mensajes privados al usuario (con el bot)
-    //console.log(discord.guilds)
+    const memberHablaEN = message.member.roles.cache.some(r => r.name == IDIOMA_EN);
+    const memberHablaPT = message.member.roles.cache.some(r => r.name == IDIOMA_PT);
+
+    if (memberHablaEN) {
+        const traduccion = await traducir(message.content, IDIOMA_EN);
+        message.reply({ content: `:flag_um: -> :flag_ar: ${traduccion}` });
+    }
+
+    if (memberHablaPT) {
+        const traduccion = await traducir(message.content, IDIOMA_PT);
+        message.reply({ content: `:flag_br: -> :flag_ar: ${traduccion}` });
+    }
 
     //No seguimos si el mensaje es del bot
     if (message.author.bot) return;

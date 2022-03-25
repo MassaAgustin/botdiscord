@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const fetch = require('node-fetch');
 
 /**
  * @author Agus Massa
@@ -100,9 +101,32 @@ const getMessageTeam2 = () => {
 }
 
 
+const traducir = (textoParaTraducir, lenguaOrigen) => {
+
+    const lenguaDestino = 'ES';
+
+    let url = `https://microsoft-translator-text.p.rapidapi.com/translate?to=${lenguaDestino}&api-version=3.0&from=${lenguaOrigen}&profanityAction=NoAction&textType=plain&suggestedFrom=${lenguaOrigen}`;
+
+    let options = {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'X-RapidAPI-Host': 'microsoft-translator-text.p.rapidapi.com',
+            'X-RapidAPI-Key': 'd80186381fmshebc8277d30abb25p186076jsna560837f30db'
+        },
+        body: `[{"Text":"${textoParaTraducir}"}]`
+    };
+
+    return fetch(url, options)
+        .then(res => res.json())
+        .then(res => res[0].translations[0].text)
+}
+
+
 
 module.exports = {
     getEmbedMessage,
     getMessageTeam1,
     getMessageTeam2,
+    traducir
 }
