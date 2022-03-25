@@ -20,13 +20,13 @@ module.exports = async (client, discord, message) => {
     const canalActual = message.channel.id;
     const canalComandos = canalesPermitidos.includes(canalActual);
 
-    if (!canalComandos) return interaction.reply("Los comandos solo pueden usarse en el canal de comandos");
+    if (!canalComandos) return message.channel.send("Los comandos solo pueden usarse en el canal de comandos");
 
     if (ambienteProduccion) {
-        if (canalDiscordDesarrollo) return interaction.reply("Instancia produccion");
+        if (canalDiscordDesarrollo) return message.channel.send("Instancia produccion");
     }
     else {
-        if (!canalDiscordDesarrollo) return interaction.reply("Instacia testeo (Arandi: 'se vienen cositas uwu')");
+        if (!canalDiscordDesarrollo) return message.channel.send("Instacia testeo (Arandi: 'se vienen cositas uwu')");
     }
 
     //console.log(await message.author.send('Probando')); Para enviar mensajes privados al usuario (con el bot)
