@@ -10,8 +10,8 @@ module.exports = async (client, discord, interaction) => {
 
     const ambienteProduccion = process.env.npm_lifecycle_event != "dev";
 
-    const canalDiscordDesarrollo = ID_TEST == message.channel.guild.id;
-    const canalActual = message.channel.id;
+    const canalDiscordDesarrollo = ID_TEST == interaction.channel.guild.id;
+    const canalActual = interaction.channel.id;
     const canalComandos = canalesPermitidos.includes(canalActual);
 
     if (ambienteProduccion) {
