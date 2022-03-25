@@ -34,12 +34,12 @@ module.exports = async (client, discord, message) => {
     const memberHablaEN = message.member.roles.cache.some(r => r.name == IDIOMA_EN);
     const memberHablaPT = message.member.roles.cache.some(r => r.name == IDIOMA_PT);
 
-    if (memberHablaEN && !message.mentions.repliedUser) {
+    if (memberHablaEN && (!message.mentions.users || message.mentions.users[message.author.id])) {
         const traduccion = await traducir(message.content, IDIOMA_EN);
         return await message.reply({ content: `:flag_um: -> :flag_ar: ${traduccion}`, ephemeral: true });
     }
 
-    if (memberHablaPT && !message.mentions.repliedUser) {
+    if (memberHablaPT && (!message.mentions.users || message.mentions.users[message.author.id])) {
         const traduccion = await traducir(message.content, IDIOMA_PT);
         return await message.reply({ content: `:flag_br: -> :flag_ar: ${traduccion}`, ephemeral: true });
     }
