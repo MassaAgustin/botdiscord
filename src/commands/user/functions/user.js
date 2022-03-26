@@ -4,8 +4,7 @@ const csgoModel = require("../../../schemas/csgoSchema");
 const axieModel = require("../../../schemas/axieSchema");
 const mir4Model = require("../../../schemas/mir4Schema");
 const eventoModel = require("../../../schemas/eventoSchema");
-const expedicionModel = require("../../../schemas/expedicionSchema");
-const desafioModel = require("../../../schemas/desafioSchema");
+const participanteModel = require("../../../schemas/participanteSchema");
 
 const NAME_EXPEDICION = "Expedicion";
 const NAME_DESAFIO = "Desafio";
@@ -15,85 +14,34 @@ const userExists = async (id) => {
     const user =
         await userModel
             .findOne({ userID: id })
-            .populate('mir4', '-_id -__v');
+            .populate('mir4', '-__v');
 
     return user;
 }
 
-const crearParticipacionEvento = async (evento, mir4) => {
+const crearParticipacionEvento = async (nombreEvento, mir4) => {
 
-    const existEvent = await eventoModel.findOne({ nombre: evento });
+    const existEvent = await eventoModel.findOne({ nombre: nombreEvento, clan: mir4.clan });
+    if (!existEvent) throw new Error(`Este evento no existe`);
 
-    if (!existEvent) throw new Error(`No existe el evento ${evento}`);
+    const horarioEvento = existEvent.horario;
+    const horarioActual = new Date();
 
-    let participacionCreada = null;
+    if ((horarioEvento.getTime() > horarioActual.getTime()) && ((horarioEvento.getTime() + 1000 * 60 * 60) < horarioActual.getTime()))
+        throw new Error(`El evento no ocurrió o ya paso, no puedes registrarte`);
 
-    switch (evento) {
-        case NAME_EXPEDICION:
-            participacionCreada = await crearExpedicion(existEvent._id, mir4);
-            break;
-        case NAME_DESAFIO:
-            participacionCreada = await crearDesafio(existEvent._id, mir4);
-            break;
-    }
-
-    return participacionCreada.save();
+    return await crearParticipacion(existEvent._id, mir4._id);
 }
 
-const getParticipantesEvento = async (evento, dia = null, mes = null, anio = null) => {
+const crearParticipacion = async (idEvento, idMir4) => {
 
-    const existEvent = await eventoModel.findOne({ nombre: evento });
-    if (!existEvent) throw new Error(`No existe el evento ${evento}`);
+    const participacion = await participanteModel.create({
+        evento: idEvento,
+        mir4: idMir4
+    });
 
-    let participantes = null;
-
-    switch (evento) {
-        case NAME_EXPEDICION:
-            participantes = await getParticipantesExpedicion(existEvent._id);
-            break;
-        case NAME_DESAFIO:
-            participantes = await getParticipantesDesafio(existEvent._id);
-    }
-
-
-    for (let i = 0; i < participantes.length; i++) {
-
-        participantes[i] = participantes[i].mir4.nickName;
-    }
-
-    return await participantes;
+    return await participacion.save();
 }
-
-const getParticipantesDesafio = async (idEvento, dia, mes, anio) => {
-
-    const participantes =
-        await desafioModel
-            .find({ evento: idEvento })
-            .select('mir4 -_id')
-            .populate('mir4', '-_id -__v');
-
-
-    return participantes;
-}
-
-const getParticipantesExpedicion = async (idEvento, dia, mes, anio) => {
-
-    const participantes =
-        await expedicionModel
-            .find({ evento: idEvento })
-            .populate('mir4', '-_id -__v');
-
-    return participantes;
-}
-
-const crearDesafio = (idEvento, idMir4) => {
-    return desafioModel.create({ evento: idEvento, mir4: idMir4 });
-}
-
-const crearExpedicion = (idEvento, idMir4) => {
-    return expedicionModel.create({ evento: idEvento, mir4: idMir4 });
-}
-
 
 const getCantidadUsuarios = async () => {
 
@@ -210,6 +158,5 @@ module.exports = {
     getAccountMir4,
     getCantidadUsuarios,
     getCantidadUsuariosMir4,
-    crearParticipacionEvento,
-    getParticipantesEvento
+    crearParticipacionEvento
 }

@@ -1,18 +1,4 @@
-const userModel = require("../../schemas/userSchema");
-const { crearParticipacionEvento } = require("../../commands/user/functions/user");
-
-const horarios = [
-    {
-        idClan: "",
-        horario: ""
-    },
-    {
-
-    },
-    {
-
-    }
-];
+const { crearParticipacionEvento, userExists } = require("../../commands/user/functions/user");
 
 const eventos = [
     { name: "Expedicion", value: "Expedicion" },
@@ -37,16 +23,16 @@ module.exports = {
 
         try {
 
-            const user = await userModel.findOne({ userID: userInteraction.id });
-            if (!user) return interaction.reply({ content: "Aun no eres usuario", ephemeral: true });
-            if (!user.mir4) return interaction.reply({ content: "Aun no tienes cuenta de mir4", ephemeral: true });
+            const user = await userExists(userInteraction.id);
+            if (!user) return interaction.reply({ content: "Antes usa /mir4 para registrarte", ephemeral: true });
+            if (!user.mir4) return interaction.reply({ content: "Te falta especificar nickName con /mir4 nickName", ephemeral: true });
+            if (!user.mir4.clan) return interaction.reply({ content: "Te falta especificar clan con /mir4 clan", ephemeral: true });
 
             const optionInteraction = interaction.options;
-
             const evento = optionInteraction.getString("evento");
 
             const participacion = await crearParticipacionEvento(evento, user.mir4);
-            let content = 'Registrado correctamente';
+            let content = 'Participacion registrada';
 
             if (!participacion) content = `No se pudo registrar al evento ${participacion}`;
 

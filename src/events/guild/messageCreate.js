@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { GuildMemberRoleManager, RoleManager } = require('discord.js');
 const { traducir } = require('../../commands/functions/message');
 
 const prefix = process.env.PREFIX;
@@ -38,7 +39,15 @@ module.exports = async (client, discord, message) => {
     const memberHablaEN = message.member.roles.cache.some(r => r.name == IDIOMA_EN);
     const memberHablaPT = message.member.roles.cache.some(r => r.name == IDIOMA_PT);
 
-    console.log(message.mentions.users);
+    /* const roleManagerGuild = new GuildMemberRoleManager(message.member);
+    const roleManager = new RoleManager(message.channel.guild);
+
+    const roles = await roleManager.fetch();
+    console.log(roles);
+
+   const roleAdded = await roleManagerGuild.add('956903230460276796');
+
+    console.log(roleAdded); */
 
     if (memberHablaEN && !message.mentions.users.length) {
         const traduccion = await traducir(message.content, IDIOMA_EN);
