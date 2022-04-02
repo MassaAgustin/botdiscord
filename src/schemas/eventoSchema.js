@@ -11,10 +11,27 @@ const eventoSchema = new Schema({
         required: true,
         ref: "clan"
     },
-    horario: {
-        type: Date,
+    duracion: {
+        type: Number,
+        default: 60
+    },
+    dia: {
+        type: Number,
         required: true,
-        unique: true
+        min: 1,
+        max: 31
+    },
+    hora: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 23
+    },
+    minuto: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 59
     }
 }, {
     timestamps: {
