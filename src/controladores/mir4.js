@@ -102,6 +102,7 @@ const getJugadorByID = async (req, res) => {
 
     const formatedJugador = {
         id: jugador._id,
+        nickName: jugador.nickName,
         poder: jugador.poder,
         nivel: jugador.nivel,
         clase: jugador.clase,
