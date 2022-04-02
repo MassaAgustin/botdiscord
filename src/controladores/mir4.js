@@ -100,7 +100,18 @@ const getJugadorByID = async (req, res) => {
             }
         );
 
-    res.status(200).json(jugador);
+    const formatedJugador = {
+        id: jugador._id,
+        poder: jugador.poder,
+        nivel: jugador.nivel,
+        clase: jugador.clase,
+        subclase: jugador.subclase,
+        clan: jugador.clan.nombre,
+        fechaCreacion: jugador['Fecha cracion'],
+        fechaModificacion: jugador['Fecha actualizacion']
+    }
+
+    res.status(200).json(formatedJugador);
 }
 
 module.exports = {
