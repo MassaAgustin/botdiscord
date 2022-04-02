@@ -92,7 +92,7 @@ const getJugadorByID = async (req, res) => {
         .populate(
             {
                 path: 'clan',
-                select: 'nombre -alianzas -_id',
+                select: 'nombre -_id',
                 /* populate: {
                     path: 'alianzas',
                     select: 'nombre -_id'
