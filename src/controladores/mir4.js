@@ -50,7 +50,7 @@ const getListadoJugadores = async (req, res) => {
 
     if (page && limit) {
 
-        let sortKey = '_id', orderValue = '-1';
+        let sortKey = 'nickName', orderValue = '1';
 
         if (sortk && order) {
             sortKey = sortk;
