@@ -26,7 +26,7 @@ const getListadoJugadores = async (req, res) => {
     };
     const queryFilter = {
     };
-    let jugadores;
+    let jugadores, promedio = 0;
 
     if (clan) {
         queryFilter.clan = clan;
@@ -71,17 +71,27 @@ const getListadoJugadores = async (req, res) => {
             customLabels: responseLabels
         };
 
-        jugadores = await mir4Model.paginate(queryFilter, options);
+        [jugadores, allJugadores] = await Promise.all([
+            mir4Model.paginate(queryFilter, options),
+            mir4Model.find(queryFilter)
+        ]);
+
+        await allJugadores.forEach( async jugador => {
+            promedio += jugador.poder
+        });
+
+        promedio /= jugadores.totalData;
 
     } else {
         jugadores = { jugadores: await mir4Model.find(queryFilter).populate('clan', '-_id -__v') };
     }
 
-
     res.status(200).json({
         success: true,
         message: `Jugadores de la página ${page}`,
+        mediaPoder: promedio,
         ...jugadores
+
     });
 }
 
