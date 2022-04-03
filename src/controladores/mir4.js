@@ -60,7 +60,7 @@ const getListadoJugadores = async (req, res) => {
         const options = {
             page,
             limit,
-            sort: { sortKey: orderValue },
+            sort: sortKey,
             populate: {
                 path: 'clan',
                 select: '-_id -__v'
@@ -76,7 +76,7 @@ const getListadoJugadores = async (req, res) => {
             mir4Model.find(queryFilter)
         ]);
 
-        await allJugadores.forEach( async jugador => {
+        await allJugadores.forEach(async jugador => {
             promedio += jugador.poder
         });
 
