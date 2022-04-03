@@ -46,6 +46,8 @@ const mir4Schema = new Schema({
     versionKey: false
 });
 
+//not
+
 mir4Schema.plugin(mongoosePaginate)
 
 module.exports = model("mir4", mir4Schema);
