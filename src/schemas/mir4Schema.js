@@ -8,6 +8,10 @@ const mir4Schema = new Schema({
         required: true,
         unique: true,
     },
+    selfie: {
+        type: String,
+        required: false
+    },
     poder: {
         type: Number,
         required: false,
