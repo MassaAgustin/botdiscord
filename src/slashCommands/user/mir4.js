@@ -120,8 +120,10 @@ module.exports = {
 
             let user = await userModel.findOne({ userID: id });
             let content = 'Nada para actualizar';
-            if (!user && idUsuarioParaRegistrar) {
-                if (!username) throw Error("Debes tener un username");
+            if (!user) {
+                if (idUsuarioParaRegistrar) {
+                    if (!username) throw Error("Debes tener un username");
+                }
                 user = await createUser(id, username);
                 content = "Usuario creado";
             }
