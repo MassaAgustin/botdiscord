@@ -8,6 +8,7 @@ const cors = require('cors');
 
 const mir4Ruta = require('./rutas/mir4');
 const clanRuta = require('./rutas/clan');
+const participanteRuta = require('./rutas/participante');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.set('port', process.env.PORT || 3001);
 
 app.use('/mir4', mir4Ruta);
 app.use('/clan', clanRuta);
+app.use('/participante', participanteRuta);
 
 app.use((req, response, next) => {
     response.set('Access-Control-Allow-Origin', '*');
