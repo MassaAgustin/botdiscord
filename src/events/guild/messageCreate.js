@@ -17,7 +17,7 @@ const IDIOMAS_PERMITIDOS = [IDIOMA_EN, IDIOMA_PT];
 
 module.exports = async (client, discord, message) => {
 
-    //* console.log(await message.author.send('Probando')); Para enviar mensajes privados al usuario (con el bot) */
+    // console.log(await message.author.send('Probando')); Para enviar mensajes privados al usuario (con el bot)
 
     const canalActual = message.channel.id;
     const canalComandos = canalesPermitidos.includes(canalActual);
