@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-module.exports = (client, discord) => {
+module.exports = (client, discord, message) => {
 
     //Devuelve todas las carpetas dentro de la carpeta events y por cada una de ellas...
     fs.readdirSync("./src/events/").forEach((dir) => {
@@ -15,7 +15,7 @@ module.exports = (client, discord) => {
                 event.event = event.event || fileJs.replace(".js", "");
 
                 //Al cliente de discord le bindeamos el evento actual.
-                client.on(event.event, event.bind(null, client, discord));
+                client.on(event.event, event.bind(client, discord, message));
             } catch (err) {
                 console.log(err);
             }

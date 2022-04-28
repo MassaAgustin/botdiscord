@@ -17,7 +17,12 @@ const IDIOMAS_PERMITIDOS = [IDIOMA_EN, IDIOMA_PT];
 
 module.exports = async (client, discord, message) => {
 
-    // console.log(await message.author.send('Probando')); Para enviar mensajes privados al usuario (con el bot)
+
+    //console.log('author: ', message.author);
+    //console.log('member: ', message.member);
+    //console.log(await message.author.send('Probando'));
+
+    if (message.author.bot) return;
 
     const canalActual = message.channel.id;
     const canalComandos = canalesPermitidos.includes(canalActual);
@@ -25,7 +30,6 @@ module.exports = async (client, discord, message) => {
     if (!canalComandos) return message.channel.send("Los comandos solo pueden usarse en el canal de comandos");
 
     //No seguimos si el mensaje es del bot
-    if (message.author.bot) return;
 
     const memberHablaEN = message.member.roles.cache.some(r => r.name == IDIOMA_EN);
     const memberHablaPT = message.member.roles.cache.some(r => r.name == IDIOMA_PT);

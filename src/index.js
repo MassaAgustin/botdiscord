@@ -75,7 +75,3 @@ clientD.once("ready", (bot) => {
     clientD.user.setStatus("online");
     clientD.user.setActivity("#Mir4", { type: "STREAMING" });
 });
-
-clientD.once("guildMemberAdd", (member) => {
-    member.send(`Bienvenido! ${member.displayName}`);
-})
